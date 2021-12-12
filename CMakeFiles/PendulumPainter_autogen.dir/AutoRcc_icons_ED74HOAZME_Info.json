@@ -1,0 +1,33 @@
+{
+	"BUILD_DIR" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen",
+	"CMAKE_BINARY_DIR" : "C:/tools/Pro/PendulumPainter",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/tools/Pro/PendulumPainter",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/tools/Src/PendulumPainter/PendulumPainter",
+	"CMAKE_SOURCE_DIR" : "C:/tools/Src/PendulumPainter/PendulumPainter",
+	"INCLUDE_DIR" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen/include",
+	"INCLUDE_DIR_Debug" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen/include_Debug",
+	"INCLUDE_DIR_MinSizeRel" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen/include_MinSizeRel",
+	"INCLUDE_DIR_RelWithDebInfo" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen/include_RelWithDebInfo",
+	"INCLUDE_DIR_Release" : "C:/tools/Pro/PendulumPainter/PendulumPainter_autogen/include_Release",
+	"INPUTS" : 
+	[
+		"C:/tools/Src/PendulumPainter/PendulumPainter/Icons/filesave.png",
+		"C:/tools/Src/PendulumPainter/PendulumPainter/Icons/print.png",
+		"C:/tools/Src/PendulumPainter/PendulumPainter/Icons/fileopen.png",
+		"C:/tools/Src/PendulumPainter/PendulumPainter/Icons/help.png"
+	],
+	"LOCK_FILE" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Lock.lock",
+	"MULTI_CONFIG" : true,
+	"OPTIONS" : [ "-name", "icons" ],
+	"OUTPUT_CHECKSUM" : "ED74HOAZME",
+	"OUTPUT_NAME" : "qrc_icons.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/5.15.2/msvc2019_64/bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Used.txt",
+	"SETTINGS_FILE_Debug" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Used_Debug.txt",
+	"SETTINGS_FILE_MinSizeRel" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Used_MinSizeRel.txt",
+	"SETTINGS_FILE_RelWithDebInfo" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Used_RelWithDebInfo.txt",
+	"SETTINGS_FILE_Release" : "C:/tools/Pro/PendulumPainter/CMakeFiles/PendulumPainter_autogen.dir/AutoRcc_icons_ED74HOAZME_Used_Release.txt",
+	"SOURCE" : "C:/tools/Src/PendulumPainter/PendulumPainter/Icons/icons.qrc",
+	"VERBOSITY" : 0
+}

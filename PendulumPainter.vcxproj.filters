@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\mocs_compilation_Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Src\PendulumPainter\PendulumPainter\PendulumPainter.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Src\PendulumPainter\PendulumPainter\main.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\ED74HOAZME\qrc_icons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\mocs_compilation_Release.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\mocs_compilation_MinSizeRel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\mocs_compilation_RelWithDebInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\tools\Src\PendulumPainter\PendulumPainter\PendulumPainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\include_Debug\ui_PendulumPainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\include_Release\ui_PendulumPainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\include_MinSizeRel\ui_PendulumPainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\include_RelWithDebInfo\ui_PendulumPainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\tools\Pro\PendulumPainter\CMakeFiles\6c9f9cc680f43de111702df07354f09e\autouic_(CONFIG).stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\tools\Pro\PendulumPainter\CMakeFiles\9b75790f837bbb2f9ed27257138eec9a\qrc_icons.cpp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\tools\Src\PendulumPainter\PendulumPainter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\tools\Src\PendulumPainter\PendulumPainter\PendulumPainter.ui">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="C:\tools\Src\PendulumPainter\PendulumPainter\Icons\icons.qrc">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\autouic_Debug.stamp" />
+    <None Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\autouic_Release.stamp" />
+    <None Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\autouic_MinSizeRel.stamp" />
+    <None Include="C:\tools\Pro\PendulumPainter\PendulumPainter_autogen\autouic_RelWithDebInfo.stamp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{64C0597A-AC70-3BC2-A303-DC02ECBA14D0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{464F1374-3895-3728-9BB6-D65162B6050D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{5AEB556F-ED3A-3580-9CD0-86624108DC14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1CC0AAB5-85A9-3393-A5FF-5D917BAA0260}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
