@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>957</width>
-    <height>516</height>
+    <width>1177</width>
+    <height>1000</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,10 +27,10 @@
    <widget class="QGroupBox" name="groupBoxGraph">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>441</width>
-      <height>381</height>
+      <x>430</x>
+      <y>50</y>
+      <width>601</width>
+      <height>561</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -40,7 +40,7 @@
      </sizepolicy>
     </property>
     <property name="title">
-     <string>Views</string>
+     <string>                                  3D View</string>
     </property>
     <layout class="QVBoxLayout">
      <property name="spacing">
@@ -63,26 +63,7 @@
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
-       <widget class="QFrame" name="tableFrame">
-        <layout class="QVBoxLayout">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-        </layout>
-       </widget>
-       <widget class="QVTKOpenGLStereoWidget" name="qvtkWidget" native="true">
+       <widget class="QVTKOpenGLStereoWidget" name="qvtkWidget3D" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>1</horstretch>
@@ -103,8 +84,8 @@
    <widget class="QPushButton" name="pushButtonClose">
     <property name="geometry">
      <rect>
-      <x>610</x>
-      <y>410</y>
+      <x>310</x>
+      <y>890</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -113,87 +94,30 @@
      <string>Close</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButtonMsgBox">
+   <widget class="QPushButton" name="pushButtonStop">
     <property name="geometry">
      <rect>
-      <x>470</x>
-      <y>410</y>
+      <x>170</x>
+      <y>890</y>
       <width>141</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>MessageBox</string>
+     <string>Stop</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBoxGraph_2">
+   <widget class="QPushButton" name="pushButtonStart">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>20</y>
-      <width>441</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-      <horstretch>1</horstretch>
-      <verstretch>1</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="title">
-     <string>Views</string>
-    </property>
-    <layout class="QVBoxLayout" name="_2">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QSplitter" name="splitter_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QVTKOpenGLStereoWidget" name="qvtkWidget2" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>1</horstretch>
-          <verstretch>1</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>300</height>
-         </size>
-        </property>
-       </widget>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>332</x>
-      <y>410</y>
+      <x>30</x>
+      <y>890</y>
       <width>131</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Darkmode</string>
+     <string>Start</string>
     </property>
    </widget>
   </widget>
@@ -202,7 +126,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>957</width>
+     <width>1177</width>
      <height>21</height>
     </rect>
    </property>

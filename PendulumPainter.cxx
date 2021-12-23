@@ -20,6 +20,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
 #include <vtkVectorText.h>
+#include <vtkCylinderSource.h>
 #include <vtkSphereSource.h>
 #include <vtkConeSource.h>
 #include <QFileDialog.h>
@@ -31,90 +32,59 @@ PendulumPainter::PendulumPainter()
   this->ui = new Ui_PendulumPainter;
   this->ui->setupUi(this);
 
-  // Qt Table View
-  this->TableView = vtkSmartPointer<vtkQtTableView>::New();
-
-  // Place the table view in the designer form
-  this->ui->tableFrame->layout()->addWidget(this->TableView->GetWidget());
-
+  //---------------------------------------------
   // Geometry
-  vtkNew<vtkVectorText> text;
-  text->SetText("Cone and Sphere");
-  vtkNew<vtkElevationFilter> elevation;
-  elevation->SetInputConnection(text->GetOutputPort());
-  elevation->SetLowPoint(0, 0, 0);
-  elevation->SetHighPoint(5, 0, 0);
-
-  vtkSphereSource* sphere = vtkSphereSource::New();
-  sphere->SetCenter(10, -5.0, 0.0);
-  sphere->SetRadius(1.0);
-  sphere->SetThetaResolution(30);
-  sphere->SetPhiResolution(30);
-
-  vtkConeSource* cone = vtkConeSource::New();
-  cone->SetCenter(0.0, -5.0, 0.0);
-  cone->SetHeight(3.0);
-  cone->SetRadius(1.0);
-  cone->SetResolution(50);
-
-
-  // Mapper
-  vtkNew<vtkPolyDataMapper> mapper;
-  mapper->SetInputConnection(elevation->GetOutputPort());
- 
-  vtkPolyDataMapper* sphereMapper = vtkPolyDataMapper::New();
-  sphereMapper->SetInputConnection(sphere->GetOutputPort());
-
-  vtkPolyDataMapper* coneMapper = vtkPolyDataMapper::New();
-  coneMapper->SetInputConnection(cone->GetOutputPort());
-
-  // Actor in scene
-  vtkNew<vtkActor> actor;
-  actor->SetMapper(mapper);
+  //---------------------------------------------
   
-  vtkActor* sphereActor = vtkActor::New();
-  sphereActor->SetMapper(sphereMapper);
+  // ------------ (1) Cone -----------------------
 
-  vtkActor* coneActor = vtkActor::New();
-  coneActor->SetMapper(coneMapper);
 
+
+  // PARAMETERS
+  int resolution = 30;
+  int ConeGroundDist = 10; 
+  
+  // cylinder paramerter
+  double CylRadius = 0.05;
+  double CylLength = 50;
+  double CylPosition[3] = { 0,(CylLength / 2 + ConeGroundDist),0};
+  double CylRotation[3] = { 90,0,0 };
+
+  // Cone paramerter
+  double ConeRadius = 1;
+  double ConeHeight = 3;
+  double ConePosition[3] = { -(ConeGroundDist + ConeHeight / 2),0,0 };
+  double ConeRotation[3] = { 0,90,0 };
+
+  // Sphere paramerter
+  double SphRadius = 1;
+  double SphPositionCenter[3] = { 0,0,0 };
+  double SphPositionTop[3] = { 0,0,CylLength + ConeGroundDist };
+
+
+//---------------------------------------------
+// Renderer
+//---------------------------------------------
 
   // VTK Renderer
   vtkNew<vtkRenderer> ren;
-  vtkNew<vtkRenderer> ren2;
 
   // Add Actor to renderer
-  ren->AddActor(actor);
-
-  ren2->AddActor(sphereActor);
-  ren2->AddActor(coneActor);
+  ren->AddActor(makeCone(ConeRadius, ConeHeight, ConePosition, ConeRotation, resolution));
+  ren->AddActor(makeCylinder(CylRadius, CylLength, CylPosition, CylRotation, resolution));
+  ren->AddActor(makeSphere(SphRadius, SphPositionCenter));
+  ren->AddActor(makeSphere(SphRadius, SphPositionTop));
 
   // VTK/Qt wedded
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
-  this->ui->qvtkWidget->setRenderWindow(renderWindow);
-  this->ui->qvtkWidget->renderWindow()->AddRenderer(ren);
+  this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
+  this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
 
-  vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2;
-  this->ui->qvtkWidget2->setRenderWindow(renderWindow2);
-  this->ui->qvtkWidget2->renderWindow()->AddRenderer(ren2);
-  
-
-  // Just a bit of Qt interest: Culling off the
-  // point data and handing it to a vtkQtTableView
-  vtkNew<vtkDataObjectToTable> toTable;
-  toTable->SetInputConnection(elevation->GetOutputPort());
-  toTable->SetFieldType(vtkDataObjectToTable::POINT_DATA);
-
-  // Here we take the end of the VTK pipeline and give it to a Qt View
-  this->TableView->SetRepresentationFromInputConnection(toTable->GetOutputPort());
 
   // Set up action signals and slots
   connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
   connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
-  connect(this->ui->pushButtonMsgBox, SIGNAL(clicked()), this, SLOT(msgBox()));
-  connect(this->ui->actionMsgBox, SIGNAL(triggered()), this, SLOT(msgBox()));
-  connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(cC()));
 
 };
 
@@ -130,11 +100,13 @@ void PendulumPainter::slotOpenFile() {
 }
 
 
+// Exit the Program
 void PendulumPainter::slotExit()
 {
   qApp->exit();
 }
 
+// Message Box
 void PendulumPainter::msgBox()
 {
 	QMessageBox msgBox;
@@ -142,12 +114,89 @@ void PendulumPainter::msgBox()
 	msgBox.exec();
 
 }
+/////////////////////////////
+//        GEOMETRIE
+/////////////////////////////
 
+// (1) Cone
+vtkActor* PendulumPainter::makeCone(double radius, double heigth, double position[3], double rotation[3], int resolution)
+{
+	vtkConeSource* cone = vtkConeSource::New();
+	cone->SetCenter(position[0], position[1], position[2]);
+	cone->SetHeight(heigth);
+	cone->SetRadius(radius);
+	cone->SetResolution(resolution);
+
+	// Mapper
+	vtkPolyDataMapper* coneMapper = vtkPolyDataMapper::New();
+	coneMapper->SetInputConnection(cone->GetOutputPort());
+
+	// Actor in scene
+	vtkActor* coneActor = vtkActor::New();
+	coneActor->SetMapper(coneMapper);
+	coneActor->RotateX(rotation[0]);
+	coneActor->RotateY(rotation[1]);
+	coneActor->RotateZ(rotation[2]);
+
+	return coneActor;
+}
+
+// (2) Cylinder 
+vtkActor* PendulumPainter::makeCylinder(double radius, double heigth, double position[3], double rotation[3], int resolution)
+{
+	vtkCylinderSource* cylinder = vtkCylinderSource::New();
+	cylinder->SetCenter(position[0], position[1], position[2]);
+	cylinder->SetHeight(heigth);
+	cylinder->SetRadius(radius);
+	cylinder->SetResolution(resolution);
+
+	// Mapper
+	vtkPolyDataMapper* cylinderMapper = vtkPolyDataMapper::New();
+	cylinderMapper->SetInputConnection(cylinder->GetOutputPort());
+
+	// Actor in scene
+	vtkActor* cylinderActor = vtkActor::New();
+	cylinderActor->SetMapper(cylinderMapper);
+	cylinderActor->RotateX(rotation[0]);
+	cylinderActor->RotateY(rotation[1]);
+	cylinderActor->RotateZ(rotation[2]);
+
+	return cylinderActor;
+}
+
+vtkActor* PendulumPainter::makeSphere(double radius, double position[3])
+{
+	vtkSphereSource* sphere = vtkSphereSource::New();
+	sphere->SetCenter(position[0], position[1], position[2]);
+	sphere->SetRadius(radius);
+
+	// Mapper
+	vtkPolyDataMapper* sphereMapper = vtkPolyDataMapper::New();
+	sphereMapper->SetInputConnection(sphere->GetOutputPort());
+
+	// Actor in scene
+	vtkActor* sphereActor = vtkActor::New();
+	sphereActor->SetMapper(sphereMapper);
+
+	return sphereActor;
+
+
+}
+
+
+
+
+
+
+
+
+/*
 void PendulumPainter::cC()
 {
 	this->ui->centralwidget->setStyleSheet("background-color: black");
 	
 }
+*/
 
 
 

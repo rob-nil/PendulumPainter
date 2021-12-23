@@ -18,13 +18,15 @@
 #include "vtkSmartPointer.h" // Required for smart pointer internal ivars.
 #include <QMainWindow>
 #include <QMessageBox>
+#include "math.h"
 
 
+#include <vtkActor.h>
+
+ 
 // Forward Qt class declarations
 class Ui_PendulumPainter;
 
-// Forward VTK class declarations
-class vtkQtTableView;
 
 class PendulumPainter : public QMainWindow
 {
@@ -35,19 +37,21 @@ public:
   PendulumPainter();
   ~PendulumPainter() override;
 
+  // functions
+  vtkActor* makeCylinder(double radius, double heigth, double position[3], double rotation[3], int resolution);
+  vtkActor* makeCone(double radius, double heigth, double position[3], double rotation[3], int resolution);
+  vtkActor* makeSphere(double radius, double position[3]);
+
 public slots:
 
   virtual void slotOpenFile();	//Open PNG File
   virtual void slotExit();		//Close Program
   virtual void msgBox();		//Show Message Box
-  virtual void cC();			//Change Background Colour
 
 protected:
 protected slots:
 
 private:
-  vtkSmartPointer<vtkQtTableView> TableView;
-
   // Designer form
   Ui_PendulumPainter* ui;
 };
