@@ -12,7 +12,13 @@
 
 #include "QVTKOpenGLStereoWidget.h"
 #include "PendulumPainter.h"
+#include "PendulumPainter_Test.h"
 
+#include <iostream>
+#include <cmath>
+#include <vector>
+
+using namespace std;
 extern int qInitResources_icons();
 
 int main(int argc, char** argv)
@@ -30,5 +36,72 @@ int main(int argc, char** argv)
   PendulumPainter myPendulumPainter;
   myPendulumPainter.show();
 
+
+  // For testing_______________________________________________________________
+
+  // Additional Testing Class
+  PendulumPainter_Test PendulumPainter_Test;
+  PendulumPainter_Test.printTest(5);
+
+
+  // Generate test data () Time Vector and vektor3D of angles
+  // struct to save angle of Pendulum in 3D
+
+
+  const int n = 500;
+  vector<double> vecTime(n,0);
+  vector<vec3D> vecAngle;
+  vector<vec3D> vecDiffAngle;
+  vector<vec3D> vecDraw;
+  
+  
+  vecTime[0] = 0;
+
+  // Initialize Time Vector
+  for (int i = 0; i < n-2; i++)
+  {
+	  vecTime[i+1]= vecTime[i] + 0.1;
+  }
+
+  // Initialize Angle Vector
+  for (int i = 0; i < n-1; i++)
+  {
+	  vecAngle.push_back(vec3D());	// element hinzufügen
+	  vecAngle[i].x = sin(vecTime[i])*180/3.1415;
+	  vecAngle[i].y = 0;
+	  vecAngle[i].z = cos(vecTime[i]) * 180 / 3.1415;
+  }
+
+  // Initialize Gradient Angle Vector
+  for (int i = 0; i < n - 2; i++)
+  {
+	  vecDiffAngle.push_back(vec3D());	// element hinzufügen
+	  vecDiffAngle[i].x = vecAngle[i + 1].x - vecAngle[i].x;
+	  vecDiffAngle[i].y = vecAngle[i + 1].y - vecAngle[i].y;
+	  vecDiffAngle[i].z = vecAngle[i + 1].z - vecAngle[i].z;
+	  //cout << arrDiffAngle[i].x << endl;
+  }
+
+ // Points on Vector to Draw on Surface
+  for (int i = 0; i < n - 1; i++)
+  {
+	  vecDraw.push_back(vec3D());	// element hinzufügen
+	  vecDraw[i].x = vecTime[i] * sin(vecTime[i]);
+	  vecDraw[i].y = 0;
+	  vecDraw[i].z = vecTime[i] * cos(vecTime[i]);
+  }
+  
+  std::cout << "Length of vecDiffAngle: " << vecDiffAngle.size() << endl;
+  std::cout << "Length of vecDraw: " << vecDraw.size() << endl;
+  std::cout << "Length of vecAngle: " << vecDraw.size() << endl;
+
+
+  myPendulumPainter.setData(vecDiffAngle, vecDraw);
+
+  // _________________________________________________________________________
+
   return app.exec();
 }
+
+
+

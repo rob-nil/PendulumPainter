@@ -23,147 +23,167 @@
 #include <vtkCylinderSource.h>
 #include <vtkSphereSource.h>
 #include <vtkConeSource.h>
+#include <vtkPlaneSource.h>
 #include <QFileDialog.h>
 
+#include <vtkAppendPolyData.h>
+#include <vtkCleanPolyData.h>
 
-// Constructor
+#include <vtkAssembly.h>
+
+#include <iostream>
+#include <vector>
+
+#include <vtkLineSource.h>
+
+#include <vtkNamedColors.h>
+#include <vtkProperty.h>
+using namespace std;
+
+//------------------------------------------------------------------------------------------
+//                                  Constuctor   
+//------------------------------------------------------------------------------------------
 PendulumPainter::PendulumPainter()
 {
+  // Initialize Class Member Variables
+  int amount = 0;
+  vec3D* arrDiffAngle = NULL;
+  double* arrTime = NULL;
+
   this->ui = new Ui_PendulumPainter;
   this->ui->setupUi(this);
 
-  //---------------------------------------------
-  // Geometry
-  //---------------------------------------------
-  
-  // ------------ (1) Cone -----------------------
-
-
-
-  // PARAMETERS
+   // to use named colours
+  //-------------------------------    Parameter   -------------------------------------
   int resolution = 30;
-  int ConeGroundDist = 10; 
+  int ConeGroundDist = 3; 
   
   // cylinder paramerter
-  double CylRadius = 0.05;
+  double CylRadius = 0.3;
   double CylLength = 50;
-  double CylPosition[3] = { 0,(CylLength / 2 + ConeGroundDist),0};
-  double CylRotation[3] = { 90,0,0 };
+  double CylPosition[3] = {0,0,0};
+  double CylRotation[3] = {0,0,0};
 
   // Cone paramerter
-  double ConeRadius = 1;
+  double ConeRadius = 1.5;
   double ConeHeight = 3;
-  double ConePosition[3] = { -(ConeGroundDist + ConeHeight / 2),0,0 };
-  double ConeRotation[3] = { 0,90,0 };
+  double ConePosition[3] = { 0,0,0 };
+  double ConeRotation[3] = {180,0,90 };
 
   // Sphere paramerter
   double SphRadius = 1;
   double SphPositionCenter[3] = { 0,0,0 };
   double SphPositionTop[3] = { 0,0,CylLength + ConeGroundDist };
 
+  // Plane Parameter
+  double PlaneSize = 2 * CylLength;
 
-//---------------------------------------------
-// Renderer
-//---------------------------------------------
+  //-------------------------------    Polydata (Geometry)   -------------------------------------
+ 
+  // 1) Cylinder
+  vtkCylinderSource* cylinder = vtkCylinderSource::New();
+  cylinder->SetCenter(CylPosition[0], CylPosition[1], CylPosition[2]);
+  cylinder->SetHeight(CylLength);
+  cylinder->SetRadius(CylRadius);
+  cylinder->SetResolution(resolution);
 
+  // Mapper
+  vtkPolyDataMapper* cylinderMapper = vtkPolyDataMapper::New();
+  cylinderMapper->SetInputConnection(cylinder->GetOutputPort());
+
+  // Actor in scene
+  vtkActor* cylinderActor = vtkActor::New();
+  cylinderActor->SetMapper(cylinderMapper);
+  cylinderActor->RotateX(CylRotation[0]);
+  cylinderActor->RotateY(CylRotation[1]);
+  cylinderActor->RotateZ(CylRotation[2]);
+
+
+  // 2) Cone
+  vtkConeSource* cone = vtkConeSource::New();
+  cone->SetCenter(*(cylinder->GetCenter()) + cylinder->GetHeight() / 2 ,
+				  *(cylinder->GetCenter() + 1) ,
+				  *(cylinder->GetCenter() + 2));
+
+  cone->SetHeight(ConeHeight);
+  cone->SetRadius(ConeRadius);
+  cone->SetResolution(resolution);
+
+  // Mapper
+  vtkPolyDataMapper* coneMapper = vtkPolyDataMapper::New();
+  coneMapper->SetInputConnection(cone->GetOutputPort());
+
+  // Actor in scene
+  vtkActor* coneActor = vtkActor::New();
+  coneActor->SetMapper(coneMapper);
+  coneActor->RotateX(ConeRotation[0]);
+  coneActor->RotateY(ConeRotation[1]);
+  coneActor->RotateZ(ConeRotation[2]);
+
+  // 3) Plane
+  vtkPlaneSource* plane = vtkPlaneSource::New();
+  plane->SetOrigin(0, 0, 0);
+  plane->SetPoint1(PlaneSize, 0.0, 0);
+  plane->SetPoint2(0, 0, PlaneSize);
+  plane->SetResolution(100, 100);
+
+  // Mapper
+  vtkPolyDataMapper* planeMapper = vtkPolyDataMapper::New();
+  planeMapper->SetInputConnection(plane->GetOutputPort());
+
+  // Actor in scene
+  vtkActor* planeActor = vtkActor::New();
+  planeActor->SetMapper(planeMapper);
+  planeActor->AddPosition(-PlaneSize/2, 0, -PlaneSize / 2);
+
+
+
+  //-------------------------------    Assembly (Pendulum)   -------------------------------------
+  assembly->AddPart(cylinderActor);
+  assembly->AddPart(coneActor);
+  assembly->AddPosition(0, (cylinder->GetHeight() / 2 + ConeGroundDist + cone->GetHeight()), 0);
+  
+  assembly->SetOrigin(0,*cylinder->GetCenter() + cylinder->GetHeight() / 2,0);
+  
+  //-------------------------------    Renderer   -------------------------------------
   // VTK Renderer
-  vtkNew<vtkRenderer> ren;
-
-  // Add Actor to renderer
-  ren->AddActor(makeCone(ConeRadius, ConeHeight, ConePosition, ConeRotation, resolution));
-  ren->AddActor(makeCylinder(CylRadius, CylLength, CylPosition, CylRotation, resolution));
+  ren->AddActor(assembly);
+  ren->AddActor(planeActor);
   ren->AddActor(makeSphere(SphRadius, SphPositionCenter));
-  ren->AddActor(makeSphere(SphRadius, SphPositionTop));
 
   // VTK/Qt wedded
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
   this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
   this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
 
-
   // Set up action signals and slots
   connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
   connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
   connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
-
+  connect(this->ui->pushButtonStart, SIGNAL(clicked()), this, SLOT(render3D()));
+  
 };
 
+//------------------------------------------------------------------------------------------
+//                                  Function Definitions    
+//------------------------------------------------------------------------------------------
+
+// Destructor
 PendulumPainter::~PendulumPainter()
 {
   // The smart pointers should clean up for up
 }
 
-// Open File (filter for png files)
-void PendulumPainter::slotOpenFile() {
-	QString selfilter = tr("PNG (*.png)");
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open your File"), "",("Images (*.png)"));
+// Set Data Function (Data from Motion Calc Class)
+void PendulumPainter::setData(vector<vec3D> vecDiffAngle, vector<vec3D> vecDraw) {
+	
+	vecDiffAngleP = vecDiffAngle;
+	std::cout << "Angle Data updated!" << endl;
+	vecDrawP = vecDraw;
+	std::cout << "Drawing Data updated!" << endl;
 }
 
-
-// Exit the Program
-void PendulumPainter::slotExit()
-{
-  qApp->exit();
-}
-
-// Message Box
-void PendulumPainter::msgBox()
-{
-	QMessageBox msgBox;
-	msgBox.setText("Cone and Sphere");
-	msgBox.exec();
-
-}
-/////////////////////////////
-//        GEOMETRIE
-/////////////////////////////
-
-// (1) Cone
-vtkActor* PendulumPainter::makeCone(double radius, double heigth, double position[3], double rotation[3], int resolution)
-{
-	vtkConeSource* cone = vtkConeSource::New();
-	cone->SetCenter(position[0], position[1], position[2]);
-	cone->SetHeight(heigth);
-	cone->SetRadius(radius);
-	cone->SetResolution(resolution);
-
-	// Mapper
-	vtkPolyDataMapper* coneMapper = vtkPolyDataMapper::New();
-	coneMapper->SetInputConnection(cone->GetOutputPort());
-
-	// Actor in scene
-	vtkActor* coneActor = vtkActor::New();
-	coneActor->SetMapper(coneMapper);
-	coneActor->RotateX(rotation[0]);
-	coneActor->RotateY(rotation[1]);
-	coneActor->RotateZ(rotation[2]);
-
-	return coneActor;
-}
-
-// (2) Cylinder 
-vtkActor* PendulumPainter::makeCylinder(double radius, double heigth, double position[3], double rotation[3], int resolution)
-{
-	vtkCylinderSource* cylinder = vtkCylinderSource::New();
-	cylinder->SetCenter(position[0], position[1], position[2]);
-	cylinder->SetHeight(heigth);
-	cylinder->SetRadius(radius);
-	cylinder->SetResolution(resolution);
-
-	// Mapper
-	vtkPolyDataMapper* cylinderMapper = vtkPolyDataMapper::New();
-	cylinderMapper->SetInputConnection(cylinder->GetOutputPort());
-
-	// Actor in scene
-	vtkActor* cylinderActor = vtkActor::New();
-	cylinderActor->SetMapper(cylinderMapper);
-	cylinderActor->RotateX(rotation[0]);
-	cylinderActor->RotateY(rotation[1]);
-	cylinderActor->RotateZ(rotation[2]);
-
-	return cylinderActor;
-}
-
+// Create sphere
 vtkActor* PendulumPainter::makeSphere(double radius, double position[3])
 {
 	vtkSphereSource* sphere = vtkSphereSource::New();
@@ -179,16 +199,99 @@ vtkActor* PendulumPainter::makeSphere(double radius, double position[3])
 	sphereActor->SetMapper(sphereMapper);
 
 	return sphereActor;
+}
 
+// start Angle simulation of pendulum
+void PendulumPainter::posUpdate3D(int i)
+{
+	
+		assembly->RotateX(vecDiffAngleP[i].x);
+		assembly->RotateZ(vecDiffAngleP[i].z);
+		//this->ui->qvtkWidget3D->renderWindow()->Render();
+		std::cout << "Pos increment" << vecDiffAngleP[i].x << endl;
+
+}
+
+void PendulumPainter::Draw3D() {
+	vtkNew<vtkNamedColors> colors;
+
+	vtkNew<vtkLineSource> line;
+	vtkNew<vtkPoints> points;
+
+	// Starting Points
+	points->InsertNextPoint(vecDrawP[0].x, vecDrawP[0].y, vecDrawP[0].z);
+	points->InsertNextPoint(vecDrawP[1].x, vecDrawP[1].y, vecDrawP[1].z);
+
+	// Draw Line
+	line->SetPoints(points);
+
+	// Mapper
+	vtkPolyDataMapper* lineMapper = vtkPolyDataMapper::New();
+	lineMapper->SetInputConnection(line->GetOutputPort());
+
+	// Actor in scene
+	vtkActor* lineActor = vtkActor::New();
+	lineActor->SetMapper(lineMapper);
+	lineActor->GetProperty()->SetColor(colors->GetColor3d("blue").GetData());
+	lineActor->GetProperty()->SetLineWidth(5);
+
+	// VTK Renderer
+	ren->AddActor(lineActor);
+
+	// Create remaining Points: 
+	for (int i = 2; i < vecDrawP.size()-1; i++)
+	{
+		// Drawing
+		std::cout << "Coordinates:   [" << vecDrawP[i].x << ", "
+										<< vecDrawP[i].y << ", "
+										<< vecDrawP[i].z << "] " << endl;
+
+		points->InsertNextPoint(vecDrawP[i].x, vecDrawP[i].y, vecDrawP[i].z);
+
+		line->Modified(); // for updating linesource
+
+		std::cout << "Amount of Points:  " << points->GetNumberOfPoints() << endl;
+		
+		posUpdate3D(i);
+		// Pendulum
+
+		this->ui->qvtkWidget3D->renderWindow()->Render();
+		QCoreApplication::processEvents();
+	}
 
 }
 
 
 
+//-------------------------------   SLOT Functions   -------------------------------------
 
+// start position update of pendulum
+void PendulumPainter::render3D()
+{
+	//posUpdate3D();
+	Draw3D();
+}
 
+// Open File (filter for png files)
+void PendulumPainter::slotOpenFile() {
+	QString selfilter = tr("PNG (*.png)");
+	QString fileName = QFileDialog::getOpenFileName(this, tr("Open your File"), "", ("Images (*.png)"));
+}
 
+// Exit the Program
+void PendulumPainter::slotExit()
+{
+	qApp->exit();
+}
 
+// Message Box
+void PendulumPainter::msgBox()
+{
+	QMessageBox msgBox;
+	msgBox.setText("Cone and Sphere");
+	msgBox.exec();
+
+}
 
 /*
 void PendulumPainter::cC()

@@ -7,6 +7,7 @@ find_package(VTK
     GUISupportQt
     InfovisCore
     RenderingFreeType
+    RenderingAnnotation
     ViewsQt)
 if (NOT VTK_FOUND)
   message("Skipping example: ${VTK_NOT_FOUND_MESSAGE}")
@@ -22,10 +23,12 @@ endif ()
 # Set your files and resources here
 set(Srcs
   PendulumPainter.cxx
+  PendulumPainter_Test.cxx
   main.cxx)
 
 set(Hdrs
-  PendulumPainter.h)
+  PendulumPainter.h
+  PendulumPainter_Test.h)
 
 set(UIs
   PendulumPainter.ui)
