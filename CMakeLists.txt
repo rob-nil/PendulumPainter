@@ -8,6 +8,7 @@ find_package(VTK
     InfovisCore
     RenderingFreeType
     RenderingAnnotation
+    IOGeometry
     ViewsQt)
 if (NOT VTK_FOUND)
   message("Skipping example: ${VTK_NOT_FOUND_MESSAGE}")

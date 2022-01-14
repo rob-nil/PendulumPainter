@@ -37,7 +37,17 @@ int main(int argc, char** argv)
   myPendulumPainter.show();
 
 
-  // For testing_______________________________________________________________
+  // TESTING: _______________________________________________________________
+
+	// Seas,
+	// du kannst dir mit meine get methoden die Startewerte holen:
+	// -getStartVec()
+	// -getStartV()
+	// -getPendulumLenght()
+	// 
+	// dann bitte die Vektoren "vecDiffAngle" und "vecDraw" berechnen und die meine Klasse dann
+	// über setData() aufnimmt. 
+
 
   // Additional Testing Class
   PendulumPainter_Test PendulumPainter_Test;
@@ -97,6 +107,8 @@ int main(int argc, char** argv)
 
 
   myPendulumPainter.setData(vecDiffAngle, vecDraw);
+  //myPendulumPainter.initialize();
+
 
   // _________________________________________________________________________
 
