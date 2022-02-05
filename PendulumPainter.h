@@ -124,6 +124,7 @@ public:
   double initOriAss[3];
   double* initPosAssbly;
   double* initOrAssbly;
+  double lineColor[3];
 
   // Geometry parameter
   int resolution;
@@ -162,7 +163,7 @@ public slots:
   virtual void getSliderValue();
   virtual void saveImage();
   virtual void changeColor();
-
+  virtual void changeColorDefault();
 protected:
 
 protected slots:

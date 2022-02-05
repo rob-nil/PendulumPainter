@@ -22,30 +22,24 @@
 #include <vtkVectorText.h>
 #include <vtkCylinderSource.h>
 #include <vtkConeSource.h>
-
-
 #include <QFileDialog.h>
-
 #include <vtkAppendPolyData.h>
 #include <vtkCleanPolyData.h>
-
 #include <vtkAssembly.h>
-
 #include <iostream>
 #include <vector>
-
 #include <vtkProperty.h>
-
 #include <vtkCamera.h>
 #include <vtkPNGWriter.h>
-
 #include <vtkWindowToImageFilter.h>
-
 #include <vtkSTLReader.h>
 #include <QColorDialog>
 #include <QColor>
 #include <vtkActor.h>
 
+#include <QApplication>
+
+#include <vtkLegendScaleActor.h>
 //------------------------------------------------------------------------------------------
 //                                  CONSTRUCTOR   
 //------------------------------------------------------------------------------------------
@@ -63,10 +57,14 @@ PendulumPainter::PendulumPainter()
   vStart = 0;			// Start velocity of Pendulum in start position
   xyzStart = {0, 0, 0};	// Start Position of Pendulum 
 
+  lineColor[0] = 34;	// Default RGB Color values for Drawing Line
+  lineColor[1] = 139;
+  lineColor[2] = 34;
+
   resolution = 30;
   ConeGroundDist = 3;
   CylRadius = 0.05;
-  ConeRadius = 4;
+  ConeRadius = 3;
   ConeHeight = 7;
 
  
@@ -95,6 +93,7 @@ PendulumPainter::PendulumPainter()
   this->ui->comboBox->addItem("Drawing Paper");
   this->ui->comboBox->addItem("Painting Color");
   
+ 
   //-------------------------------    GEOMETRY -------------------------------------
   // (1) Pendulum
   // create Pointers
@@ -112,7 +111,12 @@ PendulumPainter::PendulumPainter()
   sphere = vtkSphereSource::New();
   sphereMapper = vtkPolyDataMapper::New();
   sphereActor = vtkActor::New();
-  
+  line3DMapper = vtkPolyDataMapper::New();
+  line2DMapper = vtkPolyDataMapper::New();
+  line2DActor = vtkActor::New();
+  line3DActor = vtkActor::New();
+
+
   stlReaderCup = vtkSTLReader::New();
   cupMapper = vtkPolyDataMapper::New();
   cupActor = vtkActor::New();
@@ -120,16 +124,28 @@ PendulumPainter::PendulumPainter()
   // Initialize an Parameterize Pendulum according current value form UI
   init3DActors();
 
+  // Initialize Colours;
+  changeColorDefault();
+
+ // Legend Scale Actor
+  vtkNew<vtkLegendScaleActor> legendScaleActor;
+  legendScaleActor->SetRightAxisVisibility(0);
+  legendScaleActor->SetTopAxisVisibility(0);
+
+  vtkNew<vtkLegendScaleActor> legendScaleActor2D;
+  legendScaleActor2D->SetRightAxisVisibility(0);
+  legendScaleActor2D->SetTopAxisVisibility(0);
 
 
   //-------------------------------    VTK QT RENDERER   -------------------------------------
   // 3D VTK Renderer 
+  ren->AddActor(legendScaleActor);
   ren->AddActor(assembly);
   ren->AddActor(planeActor);
-  ren->SetBackground(colors->GetColor3d("snow").GetData());
-    ren->GetActiveCamera()->Elevation(30);
+  ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
+  ren->GetActiveCamera()->Elevation(30);
   ren->GetActiveCamera()->Azimuth(10);
-  //ren->GetActiveCamera()->SetPosition(0,30,200);
+  ren->GetActiveCamera()->SetPosition(0,0,30);
   ren->ResetCamera();
 
   // 3D VTK/Qt wedded
@@ -137,12 +153,12 @@ PendulumPainter::PendulumPainter()
   this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
   this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
   
-
   // 2D VTK Renderer / Camera Options
+  ren2D->AddActor(legendScaleActor2D);
   ren2D->GetActiveCamera()->Elevation(90);
   ren2D->GetActiveCamera()->Zoom(0.02);
 
-  ren2D->SetBackground(colors->GetColor3d("snow").GetData());
+  ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
   
   // 2D VTK/Qt wedded
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
@@ -164,6 +180,7 @@ PendulumPainter::PendulumPainter()
   connect(this->ui->SliderSimSpeed, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
   connect(this->ui->actionPrint, SIGNAL(triggered()), this, SLOT(saveImage()));
   connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
+  connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
 
   //-------------------------------    Timer   -------------------------------------
   // Timer Setup (timer will be fired every *ms)
@@ -180,6 +197,7 @@ PendulumPainter::PendulumPainter()
   this->ui->SliderSimSpeed->setMinimum(simSpeedMax);
   this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
   this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
+
 };
 
 //------------------------------------------------------------------------------------------
@@ -224,14 +242,11 @@ void PendulumPainter::SimUpdate2D() {
 		line2D->SetPoints(points2D);
 
 		// Draw: Mapper
-		line2DMapper = vtkPolyDataMapper::New();
 		line2DMapper->SetInputConnection(line2D->GetOutputPort());
 
 		// Draw: Actor in scene
-		line2DActor = vtkActor::New();
-		//vtkActor* lineActor = vtkActor::New();
 		line2DActor->SetMapper(line2DMapper);
-		line2DActor->GetProperty()->SetColor(colors->GetColor3d("green").GetData());
+		line2DActor->GetProperty()->SetColor(lineColor[0], lineColor[1], lineColor[2]);
 		line2DActor->GetProperty()->SetLineWidth(linewidth*0.7);
 
 		ren2D->AddActor(line2DActor);
@@ -270,26 +285,18 @@ void PendulumPainter::SimUpdate3D() {
 		line3D->SetPoints(points3D);
 
 		// Draw: Mapper
-		line3DMapper = vtkPolyDataMapper::New();
 		line3DMapper->SetInputConnection(line3D->GetOutputPort());
 
 		// Draw: Actor in scene
-		line3DActor = vtkActor::New();
-		//vtkActor* lineActor = vtkActor::New();
 		line3DActor->SetMapper(line3DMapper);
-		line3DActor->GetProperty()->SetColor(colors->GetColor3d("blue").GetData());
+		line3DActor->GetProperty()->SetColor(lineColor[0], lineColor[1], lineColor[2]);
+		//line3DActor->GetProperty()->SetColor(66, 36, 122);
 		line3DActor->GetProperty()->SetLineWidth(linewidth);
-
-		//2D
-		//line2DActor = vtkActor::New();
-		//line2DActor->ShallowCopy(line3DActor);
-
 
 		// Draw: VTK Renderer
 		ren->AddActor(line3DActor);
 
 		// (1.2)  PENDULUM ROTATION 
-
 		rotUpdate3D(1);
 
 		std::cout << "3D Update Initialized."  << endl;
@@ -379,7 +386,7 @@ void PendulumPainter::init3DActors() {
 	coneActor->RotateX(180);
 	coneActor->RotateY(0);
 	coneActor->RotateZ(90);
-	coneActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
+	//coneActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
 	// (3)Sphere
 	sphere->SetCenter(0, 0, 0);
 	sphere->SetRadius(1);
@@ -400,7 +407,7 @@ void PendulumPainter::init3DActors() {
 	cupMapper->SetInputConnection(stlReaderCup->GetOutputPort());
 
 	cupActor->SetMapper(cupMapper);
-	cupActor->GetProperty()->SetColor(colors->GetColor3d("blue").GetData());
+	//cupActor->GetProperty()->SetColor(colors->GetColor3d("blue").GetData());
 
 	cupActor->SetPosition(0, 0, 0);
 	cupActor->RotateX(-90);
@@ -434,7 +441,7 @@ void PendulumPainter::init3DActors() {
 	planeActor->SetPosition(0, 0, 0);
 	planeActor->SetMapper(planeMapper);
 	planeActor->AddPosition(-PlaneSize / 2, 0, -PlaneSize / 2);
-	planeActor->GetProperty()->SetColor(colors->GetColor3d("FloralWhite").GetData());
+	//planeActor->GetProperty()->SetColor(colors->GetColor3d("FloralWhite").GetData());
 	std::cout << "Pendulum and Plane new initialized" << endl;
 };
 
@@ -463,6 +470,11 @@ vtkActor* PendulumPainter::makeSphere(double radius, double position[3])
 // Function to initialize Simulation and Render Window
 void PendulumPainter::initialize() {
 
+// **************************************************************************************
+// - initSim()
+// - init3DActors()
+// 
+// **************************************************************************************
 	// Call gloabl init method
 	initSim();
 
@@ -473,19 +485,26 @@ void PendulumPainter::initialize() {
 	ren2D->RemoveActor(line2DActor);
 
 	//Initialize ProgressBar
-	this->ui->progressBar->setValue(0);
+	this->ui->progressBar->reset();
 	this->ui->progressBar->setMinimum(1);
 	this->ui->progressBar->setMaximum(vecDrawP.size());
-	
+	this->ui->progressBar->setValue(0);
+
+
 	// Create new Actors in 3D view according to current Ui Data
 	init3DActors();
 
 	//Update Qt Window
 	this->ui->qvtkWidget3D->renderWindow()->Render();
 	this->ui->qvtkWidget2D->renderWindow()->Render();
+
 	QCoreApplication::processEvents();
 
+	
 	std::cout << "UI data assigned and itialized!\n" << endl;
+	std::cout << "Progressbar max:" << this->ui->progressBar->maximum() << endl;
+	std::cout << "Progressbar value:" << this->ui->progressBar->value() << endl;
+	std::cout << "Progressbar min:" << this->ui->progressBar->minimum() << endl;
 }
 
 
@@ -602,23 +621,71 @@ void PendulumPainter::saveImage() {
 }
 
 void PendulumPainter::changeColor() {
+	
 	QColor color = QColorDialog::getColor(QColor(64, 171, 89), 0, "Select color");
+
+	string objSel = this->ui->comboBox->currentText().toStdString();
+
+
+	if (objSel == "Background 3D")
+	{
+		ren->SetBackground(color.redF(), color.greenF(), color.blueF());
+		
+	}
+	else if (objSel == "Background 2D")
+	{
+		ren2D->SetBackground(color.redF(), color.greenF(), color.blueF());
+	}
+	else if (objSel == "Drawing Paper")
+	{
+		planeActor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
+	}
+	else if (objSel == "Painting Color")
+	{
+		// assign colour to global color array for draw lines
+		lineColor[0] = color.redF();
+		lineColor[1] = color.greenF();
+		lineColor[2] = color.blueF();
+		
+		std::cout << "Color 1:  " << lineColor[0] << endl;
+		std::cout << "Color 2:  " << lineColor[1] << endl;
+		std::cout << "Color 3:  " << lineColor[2] << endl;
+
+		// Color of cone actor
+		coneActor->GetProperty()->SetColor(color.redF(), color.greenF(), color.blueF());
+	}
+		
+	this->statusBar()->showMessage("Color successfully changed!");
+
+	this->ui->qvtkWidget3D->renderWindow()->Render();
+	this->ui->qvtkWidget2D->renderWindow()->Render();
+	QCoreApplication::processEvents();
+
+	std::cout << "Color set." << endl;
 };
 
-/*
-void PendulumPainter::cC()
-{
-	this->ui->centralwidget->setStyleSheet("background-color: black");
-	
-}
-*/
+void PendulumPainter::changeColorDefault() {
 
-//assembly->SetPosition(initPosAss[0], initPosAss[1], initPosAss[2]);
-//assembly->SetOrientation(initOriAss[0], initOriAss[1], initOriAss[2]);
-// 
-//ren->RemoveActor(assembly);
+	// Drawing Line (rgb but scaled to 1!!)
+	lineColor[0] = 0.960784;
+	lineColor[1] = 0.870588;
+	lineColor[2] = 0.701961;
 
-	// Store Initial Position and Orientation
-	//initPosAss[0] = *(assembly->GetPosition());
-	//initPosAss[1] = *(assembly->GetPosition() + 1);
-	//initPosAss[2] = *(assembly->GetPosition() + 2);
+	// Drawing Paper
+	planeActor->GetProperty()->SetColor(colors->GetColor3d("FloralWhite").GetData());
+
+	//2D 3D Backrounds
+	ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
+	ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
+
+	// Cone
+	coneActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
+
+	this->statusBar()->showMessage("Welcome to the Pendlulum Painter.");
+
+	this->ui->qvtkWidget3D->renderWindow()->Render();
+	this->ui->qvtkWidget2D->renderWindow()->Render();
+	QCoreApplication::processEvents();
+
+	std::cout << "Color set to default." << endl;
+};
