@@ -12,7 +12,7 @@
 
 #include "QVTKOpenGLStereoWidget.h"
 #include "PendulumPainter.h"
-#include "PendulumPainter_Test.h"
+#include "SphericalPendulum.h"
 
 #include <iostream>
 #include <cmath>
@@ -23,18 +23,18 @@ extern int qInitResources_icons();
 
 int main(int argc, char** argv)
 {
-  // needed to ensure appropriate OpenGL context is created for VTK rendering.
-  QSurfaceFormat::setDefaultFormat(QVTKOpenGLStereoWidget::defaultFormat());
+	// needed to ensure appropriate OpenGL context is created for VTK rendering.
+	QSurfaceFormat::setDefaultFormat(QVTKOpenGLStereoWidget::defaultFormat());
 
-  // QT Stuff
-  QApplication app(argc, argv);
+	// QT Stuff
+	QApplication app(argc, argv);
 
-  QApplication::setStyle("fusion");
+	QApplication::setStyle("fusion");
 
-  qInitResources_icons();
+	qInitResources_icons();
 
-  PendulumPainter myPendulumPainter;
-  myPendulumPainter.show();
+	PendulumPainter myPendulumPainter;
+	myPendulumPainter.show();
 
 
   // TESTING: _______________________________________________________________
@@ -47,8 +47,20 @@ int main(int argc, char** argv)
 	// 
 	// dann bitte die Vektoren "vecDiffAngle" und "vecDraw" berechnen und die meine Klasse dann
 	// über setData() aufnimmt. 
+	
+	vector<double> initStateVector = { 1.0, 0.0, 1.0, 0.1 }; // austauschen bzw. Umrechnungsfunktion anwenden
+	vector<double> dampingCoefficients = { 0.1, 0.1 };
+	vector<double> timeSettings = { 0, 10, 0.1 };
+	SphericalPendulum mySphericalPendulum(myPendulumPainter.getPendulumLenght(), initStateVector, dampingCoefficients, timeSettings);
+	//mySphericalPendulum.setPendulumLength(myPendulumPainter.getPendulumLenght());
+	//mySphericalPendulum.setInitState(initStateVector);
+	mySphericalPendulum.integrateODE();
+	vector<vec3D> vecDiffAngle;
+	vector<vec3D> vecDraw;
 
+	myPendulumPainter.setData(vecDiffAngle, vecDraw);
 
+  /*
   // Additional Testing Class
   PendulumPainter_Test PendulumPainter_Test;
   PendulumPainter_Test.printTest(5);
@@ -114,6 +126,6 @@ int main(int argc, char** argv)
 
   return app.exec();
 }
-
+*/
 
 

@@ -24,12 +24,12 @@ endif ()
 # Set your files and resources here
 set(Srcs
   PendulumPainter.cxx
-  PendulumPainter_Test.cxx
+  SphericalPendulum.cxx
   main.cxx)
 
 set(Hdrs
   PendulumPainter.h
-  PendulumPainter_Test.h)
+  SphericalPendulum.h)
 
 set(UIs
   PendulumPainter.ui)
