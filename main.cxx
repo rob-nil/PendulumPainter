@@ -119,7 +119,7 @@ int main(int argc, char** argv)
 
 
   myPendulumPainter.setData(vecDiffAngle, vecDraw);
-  myPendulumPainter.initialize();
+  //myPendulumPainter.initialize();
 
 
   // _________________________________________________________________________
