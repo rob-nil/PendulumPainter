@@ -17,34 +17,45 @@
 
 #include <vector>
 
+using namespace std;
+
 // The type of container used to hold the state vector 
 typedef vector<double> stateType;
+typedef vector<vector<double>> matrix;
 
 class SphericalPendulum {
+	public:
+		// Constructor/Destructor
+		SphericalPendulum();
+		SphericalPendulum(vector<double> inputSettings, vector<double> dampingCoeff, vector<double> timeSettings);
+		~SphericalPendulum();
 
-public:
-	// Constructor/Destructor
-	SphericalPendulum();
-	SphericalPendulum(double pendulumLength, vector<double> init_x, vector<double> dampingCoeff, vector<double> timeSettings);
-	~SphericalPendulum();
+		// Set / Get functions
+		void setInitState(vector<double> init_x);
+		void setInputSettings(vector<double> inputSettings);
+		void setDampingCoeff(vector<double> dampingCoeff);
+		void setTimeSettings(vector<double> timeSettings);
+		matrix getMatVTK(matrix& matX);
 
-	// functions
-	void setInitState(vector<double> init_x);
-	void setPendulumLength(double pendulumLength);
-	void setDampingCoeff(vector<double> dampingCoeff);
-	void setTimeSettings(vector<double> timeSettings);
-	void printState(vector<double> t, vector<stateType> x, size_t& s);
-	void integrateODE();
+		// ODE functions
+		void integrateODE(matrix& matx, vector<double>& vectime);
+		//void integrateODE1(matrix& matX, vector<double>& vecTime);
 
-private:
-	double r = 1;
-	const double g = 9.81;					//Gravity
-	vector<double> d = { 0.0, 0.0 };		//Damping coefficients phi and theta
-	stateType x0;							//Initial state vector
-	vector<double> time = { 0, 10, 0.1 };	//Contains t_start, t_end and delta_t
+		// Other functions
+		void printState(vector<double> t, vector<stateType> x, size_t& s);
 
-	//functions
-	void defineODESystem(const stateType& x, stateType& dxdt, double t);
-};
+	private:
+		double r = 100;							// Pendulum length
+		double l = 3;							// Distance pendulum to drawing plane
+		const double g = 9.81;					// Gravity
+		vector<double> d = { 0.0, 0.0 };		// Damping coefficients phi and theta
+		stateType x0;							// Initial state vector
+		vector<double> timeSet = { 0, 10, 0.1 };	// Contains t_start, t_end and delta_t
+
+		// ODE functions
+		void defineODESystem(const stateType& x, stateType& dxdt, const double t);
+		void printState2(matrix mat);
+		//void operator()(const stateType& x, stateType& dxdt, const double t);
+	};
 
 #endif // PendulumPainter_H
