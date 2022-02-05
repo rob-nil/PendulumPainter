@@ -50,8 +50,11 @@ struct vec3D {
 	double z;
 };
 
+typedef vector<vector<double>> matrix;
+
 // Forward Qt class declarations
 class Ui_PendulumPainter;
+
 
 class PendulumPainter : public QMainWindow
 {
@@ -108,6 +111,9 @@ public:
   vtkPolyDataMapper* cupMapper;
   vtkActor* cupActor;
 
+
+  vector<double>vecDataGUI = {0,0,0,0,0,0};
+
   //QProgressBar* progressBar;
 
   bool run;
@@ -117,8 +123,11 @@ public:
   int linewidth;
   string imageFilePath;
  
-  double vStart; 
-  vec3D xyzStart;
+  double vStartx;
+  double vStarty;
+
+  double phi0;
+  double theta0;
 
   double initPosAss[3];
   double initOriAss[3];
@@ -128,7 +137,7 @@ public:
 
   // Geometry parameter
   int resolution;
-  int ConeGroundDist;
+  double ConeGroundDist;
   double CylRadius;
   double pendulumLength;
   double ConeRadius;
@@ -136,6 +145,8 @@ public:
   double cupRadius;
   double cupHeight;
   double cupscale;
+
+  matrix matCalData;
 
   // Functions
   vtkActor* makeCylinder(double radius, double heigth, double position[3], double rotation[3], int resolution);
@@ -146,11 +157,14 @@ public:
   void setData(vector<vec3D>, vector<vec3D>);
   void SimUpdate3D();
   void SimUpdate2D();
-  vec3D getStartVec();
-  double getStartV();
-  double getPendulumLenght();
   void initSim();
   void init3DActors();
+
+  void setCalData(matrix& matCal);
+
+  void runCalSphericalPendulum();
+
+  vector<double> getDataGUI();
 
 public slots:
 

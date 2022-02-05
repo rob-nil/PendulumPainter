@@ -40,6 +40,9 @@
 #include <QApplication>
 
 #include <vtkLegendScaleActor.h>
+
+
+#include "SphericalPendulum.h"
 //------------------------------------------------------------------------------------------
 //                                  CONSTRUCTOR   
 //------------------------------------------------------------------------------------------
@@ -54,9 +57,10 @@ PendulumPainter::PendulumPainter()
   timerms = 500;		// Time in ms when Qtimer is firering (asken if button is pressed or not)
   linewidth = 4;		// Define linewith of line drawn on the 2D/3D Visulization
   pendulumLength = 50;
-  vStart = 0;			// Start velocity of Pendulum in start position
-  xyzStart = {0, 0, 0};	// Start Position of Pendulum 
-
+  vStartx = 2;			// Start velocity of Pendulum in start position in x position
+  vStarty = 0.5;			// Start velocity of Pendulum in start position in x position
+  phi0 = 0.6;
+  theta0 = 0.3;
   lineColor[0] = 34;	// Default RGB Color values for Drawing Line
   lineColor[1] = 139;
   lineColor[2] = 34;
@@ -83,10 +87,10 @@ PendulumPainter::PendulumPainter()
   // set UI input values to default
   this->ui->lineEditLineWidth->setText(QString::number(linewidth));
   this->ui->lineEditPendulumLength->setText(QString::number(pendulumLength));
-  this->ui->lineEditStart_v->setText(QString::number(vStart));
-  this->ui->lineEditStart_x->setText(QString::number(xyzStart.x));
-  this->ui->lineEditStart_y->setText(QString::number(xyzStart.y));
-  this->ui->lineEditStart_z->setText(QString::number(xyzStart.z));
+  this->ui->lineEditStart_vx->setText(QString::number(vStartx));
+  this->ui->lineEditStart_vy->setText(QString::number(vStarty));
+  this->ui->lineEditStart_phi0->setText(QString::number(phi0));
+  this->ui->lineEditStart_theta0->setText(QString::number(theta0));
 
   this->ui->comboBox->addItem("Background 3D");
   this->ui->comboBox->addItem("Background 2D");
@@ -219,12 +223,23 @@ void PendulumPainter::setData(vector<vec3D> vecDiffAngle, vector<vec3D> vecDraw)
 	std::cout << "Drawing Data initialized!\n\n";
 }
 
+// Set Data from Calculation Class (Julian)
+void PendulumPainter::setCalData(matrix& matCal) {
+	matCalData = matCal;
+
+	std::cout << "Calculation Data received and updated!" << endl;
+};
+
+
 // Function to update Pendulum Position (Angle) 
 void PendulumPainter::rotUpdate3D(int i)
 {
-		assembly->RotateX(vecDiffAngleP[i].x);
-		assembly->RotateZ(vecDiffAngleP[i].z);
-		std::cout << "Pos increment" << vecDiffAngleP[i].x << endl;
+		//assembly->RotateX(vecDiffAngleP[i].x);
+		//assembly->RotateZ(vecDiffAngleP[i].z);
+		//std::cout << "Pos increment" << vecDiffAngleP[i].x << endl;
+
+		assembly->RotateX(matCalData[i][2]);
+		assembly->RotateZ(matCalData[i][3]);
 }
 
 // 2D: Single Simulation Increment for Pendulum Motion and Drawing 
@@ -235,8 +250,8 @@ void PendulumPainter::SimUpdate2D() {
 	{
 		// (1.1)  DRAWING 
 		// Draw: Starting Points
-		points2D->InsertNextPoint(vecDrawP[0].x, vecDrawP[0].y, vecDrawP[0].z);
-		points2D->InsertNextPoint(vecDrawP[1].x, vecDrawP[1].y, vecDrawP[1].z);
+		points2D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
+		points2D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][1]);
 
 		// Draw: Line
 		line2D->SetPoints(points2D);
@@ -258,11 +273,10 @@ void PendulumPainter::SimUpdate2D() {
 	else
 	{
 		// (2.1)  DRAWING 
-		std::cout << "Coordinates:   [" << vecDrawP[numIncr].x << ", "
-			<< vecDrawP[numIncr].y << ", "
-			<< vecDrawP[numIncr].z << "] " << endl;
+		std::cout << "Coordinates:   [" << matCalData[numIncr][0] << ", "
+			<< matCalData[numIncr][1] << "] " << endl;
 
-		points2D->InsertNextPoint(vecDrawP[numIncr].x, vecDrawP[numIncr].y, vecDrawP[numIncr].z);
+		points2D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
 		line2D->Modified(); // for updating linesource
 
 
@@ -278,8 +292,8 @@ void PendulumPainter::SimUpdate3D() {
 	{
 		// (1.1)  DRAWING 
 		// Draw: Starting Points
-		points3D->InsertNextPoint(vecDrawP[0].x, vecDrawP[0].y, vecDrawP[0].z);
-		points3D->InsertNextPoint(vecDrawP[1].x, vecDrawP[1].y, vecDrawP[1].z);
+		points3D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
+		points3D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][0]);
 
 		// Draw: Line
 		line3D->SetPoints(points3D);
@@ -306,11 +320,10 @@ void PendulumPainter::SimUpdate3D() {
 	else 
 	{		
 		// (2.1)  DRAWING 
-		std::cout << "Coordinates:   [" << vecDrawP[numIncr].x << ", "
-										<< vecDrawP[numIncr].y << ", "
-										<< vecDrawP[numIncr].z << "] " << endl;
+		std::cout << "Coordinates:   [" << matCalData[numIncr][0] << ", "
+			<< matCalData[numIncr][1] << "] " << endl;
 
-		points3D->InsertNextPoint(vecDrawP[numIncr].x, vecDrawP[numIncr].y, vecDrawP[numIncr].z);
+		points3D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
@@ -324,10 +337,10 @@ void PendulumPainter::initSim() {
 	// Read InputData from Ui
 	linewidth = this->ui->lineEditLineWidth->text().toInt();
 	pendulumLength = this->ui->lineEditPendulumLength->text().toDouble();
-	xyzStart = { this->ui->lineEditStart_x->text().toDouble(),
-				 this->ui->lineEditStart_y->text().toDouble(),
-				 this->ui->lineEditStart_z->text().toDouble() };
-	vStart = this->ui->lineEditStart_v->text().toDouble();
+	phi0 = this->ui->lineEditStart_phi0->text().toDouble();
+	theta0 = this->ui->lineEditStart_theta0->text().toDouble();
+	vStartx = this->ui->lineEditStart_vx->text().toDouble();
+	vStarty = this->ui->lineEditStart_vy->text().toDouble();
 
 	// Reset Simulaiton 
 	numIncr = 1;
@@ -425,6 +438,11 @@ void PendulumPainter::init3DActors() {
 	assembly->AddPosition(0, (cylinder->GetHeight() / 2 + ConeGroundDist + cone->GetHeight()), 0);
 	assembly->SetOrigin(0, *cylinder->GetCenter() + cylinder->GetHeight() / 2, 0);
 
+
+	// Auslenktung zur Zeit 0
+	assembly->RotateX(phi0*180/3.1415);
+	assembly->RotateZ(theta0 * 180 / 3.1415);
+
 	
 	// (4) -- Plane
 	double PlaneSize = 1.5 * pendulumLength;
@@ -467,6 +485,30 @@ vtkActor* PendulumPainter::makeSphere(double radius, double position[3])
 //                                  SLOT Function Definitions    
 //------------------------------------------------------------------------------------------
 
+// Create Calulation Object and start calculation
+void PendulumPainter::runCalSphericalPendulum() {
+
+	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
+	vector<double> dampingCoefficients = { 0.1, 0.1 };
+	vector<double> timeSettings = { 0, 200, 0.1 };
+	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
+
+	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
+
+	vector<double> vecTime;
+	vector<double> refVecTime = vecTime;
+	matrix matX;
+	matrix& refMatX = matX;
+	matrix matVTK;
+	matrix& refMatVTK = matVTK;
+
+	//mySphericalPendulum.integrateODE(refMatX, refVecTime);
+	mySphericalPendulum.integrateODE(refMatX, refVecTime);
+	matVTK = mySphericalPendulum.getMatVTK(refMatX);
+
+	this->setCalData(matVTK);
+};
+
 // Function to initialize Simulation and Render Window
 void PendulumPainter::initialize() {
 
@@ -475,8 +517,13 @@ void PendulumPainter::initialize() {
 // - init3DActors()
 // 
 // **************************************************************************************
+
+
 	// Call gloabl init method
 	initSim();
+
+	// Start Calucaltion with sphericalPendulum class
+	runCalSphericalPendulum();
 
 	//Initialize Actors
 	points3D->Initialize();
@@ -487,7 +534,7 @@ void PendulumPainter::initialize() {
 	//Initialize ProgressBar
 	this->ui->progressBar->reset();
 	this->ui->progressBar->setMinimum(1);
-	this->ui->progressBar->setMaximum(vecDrawP.size());
+	this->ui->progressBar->setMaximum(matCalData.size());
 	this->ui->progressBar->setValue(0);
 
 
@@ -528,7 +575,7 @@ void PendulumPainter::pushButtonSim() {
 // Simulation LOOP called by QTimer 
 void PendulumPainter::timerslot() {
 	while (run) {
-		if (numIncr < vecDiffAngleP.size())
+		if (numIncr < matCalData.size())
 		{
 			SimUpdate3D();
 			SimUpdate2D();
@@ -580,17 +627,20 @@ void PendulumPainter::getSliderValue()
 	std::cout << "Slider Value changed: " << simSpeedms << endl;
 }
 
+vector<double> PendulumPainter::getDataGUI() {
+	vector<double>fVec(6);
+	fVec = {phi0,
+			theta0,
+			vStartx,
+			vStarty,
+			pendulumLength,
+			ConeGroundDist};
 
-// Get Methods for class interaction
-vec3D PendulumPainter::getStartVec() {
-	return xyzStart;
+	return fVec;
+
+	std::cout << "GUI Data received!"  << endl;
 };
-double PendulumPainter::getStartV() {
-	return vStart;
-};
-double PendulumPainter::getPendulumLenght() {
-	return pendulumLength;
-};
+
 
 void PendulumPainter::saveImage() {
 	
