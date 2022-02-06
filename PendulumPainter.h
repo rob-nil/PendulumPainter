@@ -19,42 +19,29 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include "math.h"
-
 #include <vtkActor.h>
 #include <vtkNew.h>
 #include <vtkAssembly.h>
 #include <vtkNamedColors.h>
-
 #include <vtkLineSource.h>
 #include <vtkPolyDataMapper.h>
-
 #include <vector>
 #include <QTimer>	// Start Stop Event
-
 #include <QProgressBar>
-
 #include <vtkPolyDataMapper.h>
 #include <vtkCylinderSource.h>
 #include <vtkConeSource.h>
 #include <vtkPlaneSource.h>
 #include <string>
 #include <vtkSphereSource.h>
-
 #include <vtkSTLReader.h>
+
+// Basics
 using namespace std;
-
-// Data Types
-struct vec3D {
-	double x;
-	double y;
-	double z;
-};
-
 typedef vector<vector<double>> matrix;
 
 // Forward Qt class declarations
 class Ui_PendulumPainter;
-
 
 class PendulumPainter : public QMainWindow
 {
@@ -67,107 +54,8 @@ public:
   // Destructor
   ~PendulumPainter() override;
 
-  // Variables:
-  //vtkNew<vtkAssembly> assembly;
-  vtkAssembly* assembly;
-
-  vtkNew<vtkLineSource> line3D;
-  vtkNew<vtkPoints> points3D;
-
-  vtkNew<vtkLineSource> line2D;
-  vtkNew<vtkPoints> points2D;
-
-  vector<vec3D> vecDiffAngleP;
-  vector<vec3D> vecTimeP;
-  vector<vec3D> vecDrawP;
-
-  vtkNew<vtkRenderer> ren;
-  vtkNew<vtkRenderer> ren2D;
-
-  vtkNew<vtkNamedColors> colors;
-  QTimer* timer;
-  vtkActor* line3DActor;
-  vtkPolyDataMapper* line3DMapper;
-
-  vtkActor* line2DActor;
-  vtkPolyDataMapper* line2DMapper;
-
- 
-  vtkActor* coneActor ;
-  vtkActor* planeActor ;
-  vtkConeSource* cone ;
-  vtkCylinderSource* cylinder ;
-  vtkPolyDataMapper* cylinderMapper ;
-  vtkActor* cylinderActor;
-  vtkActor* cylinderActor2;
-  vtkPolyDataMapper* coneMapper;
-  vtkPlaneSource* plane;
-  vtkPolyDataMapper* planeMapper;
-  vtkSphereSource* sphere;
-  vtkPolyDataMapper* sphereMapper;
-  vtkActor* sphereActor;
-
-  vtkSTLReader* stlReaderCup;
-  vtkPolyDataMapper* cupMapper;
-  vtkActor* cupActor;
-
-
-  vector<double>vecDataGUI = {0,0,0,0,0,0};
-
-  //QProgressBar* progressBar;
-
-  bool run;
-  int numIncr;
-  int simSpeedms;
-  int timerms;
-  int linewidth;
-  string imageFilePath;
- 
-  double vStartx;
-  double vStarty;
-
-  double phi0;
-  double theta0;
-
-  double initPosAss[3];
-  double initOriAss[3];
-  double* initPosAssbly;
-  double* initOrAssbly;
-  double lineColor[3];
-
-  // Geometry parameter
-  int resolution;
-  double ConeGroundDist;
-  double CylRadius;
-  double pendulumLength;
-  double ConeRadius;
-  double ConeHeight;
-  double cupRadius;
-  double cupHeight;
-  double cupscale;
-
-  matrix matCalData;
-
-  // Functions
-  vtkActor* makeCylinder(double radius, double heigth, double position[3], double rotation[3], int resolution);
-  vtkActor* makeCone(double radius, double heigth, double position[3], double rotation[3], int resolution);
-  vtkActor* makeSphere(double radius, double position[3]);
-
-  void rotUpdate3D(int i);
-  void setData(vector<vec3D>, vector<vec3D>);
-  void SimUpdate3D();
-  void SimUpdate2D();
-  void initSim();
-  void init3DActors();
-
-  void setCalData(matrix& matCal);
-
-  void runCalSphericalPendulum();
-
-  vector<double> getDataGUI();
-
 public slots:
-
+  //Public Functions
   virtual void slotOpenFile();	//Open PNG File
   virtual void slotExit();		//Close Program
   virtual void msgBox();		//Show Message Box
@@ -178,7 +66,81 @@ public slots:
   virtual void saveImage();
   virtual void changeColor();
   virtual void changeColorDefault();
+
 protected:
+
+	// General Variables
+	bool run;
+	bool computing;
+	int numIncr;
+	int simSpeedms;
+	int timerms;
+	int linewidth;
+	string imageFilePath;
+	double lineColor[3];
+
+	// Starting Values t=0
+	double vStartx;
+	double vStarty;
+	double phi0;
+	double theta0;
+
+	// Geometry parameter
+	int resolution;
+	double ConeGroundDist;
+	double CylRadius;
+	double pendulumLength;
+	double ConeRadius;
+	double ConeHeight;
+
+	// Variables for data exchange between classes
+	vector<double>vecDataGUI = { 0,0,0,0,0,0 };
+	matrix matCalData;
+
+	// VTK variables
+	QTimer* timer;
+
+	vtkNew<vtkNamedColors> colors;
+
+	vtkNew<vtkPoints> points2D;
+	vtkNew<vtkPoints> points3D;
+
+	vtkNew<vtkLineSource> line3D;
+	vtkNew<vtkLineSource> line2D;
+
+	vtkConeSource* cone;
+	vtkPlaneSource* plane;
+	vtkSphereSource* sphere;
+	vtkCylinderSource* cylinder;
+
+	vtkAssembly* assembly;
+
+	vtkPolyDataMapper* cylinderMapper;
+	vtkPolyDataMapper* coneMapper;
+	vtkPolyDataMapper* planeMapper;
+	vtkPolyDataMapper* sphereMapper;
+	vtkPolyDataMapper* line3DMapper;
+	vtkPolyDataMapper* line2DMapper;
+
+	vtkActor* cylinderActor;
+	vtkActor* cylinderActor2;
+	vtkActor* sphereActor;
+	vtkActor* line3DActor;
+	vtkActor* line2DActor;
+	vtkActor* coneActor;
+	vtkActor* planeActor;
+
+	vtkNew<vtkRenderer> ren;
+	vtkNew<vtkRenderer> ren2D;
+
+	// Internal Class Functions
+	void SimUpdate3D();
+	void SimUpdate2D();
+	void initSim();
+	void init3DActors();
+	void setCalData(matrix& matCal);
+	void runCalSphericalPendulum();
+	vector<double> getDataGUI();
 
 protected slots:
 
@@ -187,7 +149,5 @@ private:
   Ui_PendulumPainter* ui;
 
 };
-
-
 
 #endif // PendulumPainter_H
