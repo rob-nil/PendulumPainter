@@ -43,9 +43,10 @@ SphericalPendulum::~SphericalPendulum() {
 
 // Set input settings
 void SphericalPendulum::setInputSettings(vector<double> inputSettings) {
-	for (int i = 0; i <= 3; i++) {
-		x0.push_back(inputSettings[i]);
-	}
+	x0.push_back(inputSettings[0] * degToRad);
+	x0.push_back(inputSettings[2] / r);
+	x0.push_back(inputSettings[1] * degToRad);
+	x0.push_back(inputSettings[3] / r);
 	r = inputSettings[4];
 	l = inputSettings[5];
 }
@@ -72,9 +73,9 @@ void SphericalPendulum::setTimeSettings(vector<double> timeSettings) {
 // Introducing the ODEs as first order ODEs. Apply numerical integration design as the right hand side (RHS) of the equations.
 void SphericalPendulum::defineODESystem(const stateType& x, stateType& dxdt, double t) {
 	dxdt[0] = x[1];
-	dxdt[1] = x[3] * x[3] * sin(x[0]) * cos(x[0]) - g / r * sin(x[0]);
+	dxdt[1] = x[3] * x[3] * sin(x[0]) * cos(x[0]) - g / r * sin(x[0]) - d[0] * x[1] / m;
 	dxdt[2] = x[3];
-	dxdt[3] = -(2 * x[3] * x[1] * cos(x[0])) / sin(x[0]);
+	dxdt[3] = -(2 * x[3] * x[1] * cos(x[0])) / sin(x[0])- d[1] * x[3] / m;
 }
 
 /*
@@ -107,6 +108,7 @@ void SphericalPendulum::integrateODE(matrix& matX, vector<double>& vecTime){
 	vector<double> fVecTime;
 
 	size_t steps = integrate([this](auto const& x, auto& dxdt, auto t) {this->defineODESystem(x, dxdt, t); }, x0, timeSet[0], timeSet[1], timeSet[2], push_back_state_and_time(fMatX, fVecTime) );
+	cout << "\n>>>> ODE output! ------------------------------------------------------\n\n";
 	printState(fVecTime, fMatX, steps);
 
 	matX = fMatX;
@@ -134,10 +136,11 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 	for (int i = 0; i < (rows-1); i++) {
 		fVec[0] = (r + l) * cos(matX[i][2]);
 		fVec[1] = (r + l) * sin(matX[i][2]);
-		fVec[2] = matX[i + 1][0] - matX[i][0];
-		fVec[3] = matX[i + 1][2] - matX[i][2];
+		fVec[2] = (matX[i + 1][0] - matX[i][0]) / degToRad;
+		fVec[3] = matX[i + 1][2] - matX[i][2] / degToRad;
 		fMat.push_back(fVec);
 	}
+	cout << "\n>>>> Values for GUI! ------------------------------------------------------\n\n";
 	printAnyMatrix(fMat);
 	return fMat;
 }
@@ -149,7 +152,11 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 // outputs the solution of the ODE
 void SphericalPendulum::printState(vector<double> t, vector<stateType> x, size_t& s) {
 	for (size_t i = 0; i <= s; i++) {
-		cout << "t = " << t[i] << '\t' << "phi = " << x[i][0] << '\t' << '\t' << "theta = " << x[i][2] << '\t' << '\n';
+		cout << "t = " << t[i] << '\t' 
+			 << "phi = " << x[i][0] << '\t' 
+			 << "theta = " << x[i][2] << '\t' 
+			 << "phi-dot = " << x[i][1] << '\t' 
+			 << "theta-dot = " << x[i][3] << '\n';
 	}
 }
 

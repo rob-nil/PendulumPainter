@@ -163,6 +163,7 @@ PendulumPainter::PendulumPainter()
  
   
   // Create orientation widget (Coordinate Sytstem)
+  /*
   vtkNew<vtkOrientationMarkerWidget> orientationWidget;
   vtkNew<vtkAxesActor> axis;
   axis->SetXAxisLabelText("test");
@@ -175,7 +176,7 @@ PendulumPainter::PendulumPainter()
   orientationWidget->SetViewport(0.0, 0.0, 0.4, 0.4);
   orientationWidget->SetEnabled(1);
   orientationWidget->InteractiveOn();
-
+  */
 
   //-------------------------------    SLOTS Connections   ---------------------------
   // Set up action signals and slots
@@ -317,8 +318,8 @@ void PendulumPainter::SimUpdate3D() {
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
-		assembly->RotateX(matCalData[numIncr][2] * 180 / 3.1415);
-		assembly->RotateZ(matCalData[numIncr][3] * 180 / 3.1415);
+		assembly->RotateX(matCalData[numIncr][2]);
+		assembly->RotateZ(matCalData[numIncr][3]);
 	}
 }
 
@@ -361,13 +362,13 @@ void PendulumPainter::init3DActors() {
 	cylinderActor->SetOrientation(0, 0, 0);
 	cylinderActor->SetMapper(cylinderMapper);
 	cylinderActor->AddPosition(sin(asin(ConeRadius / pendulumLength)) * pendulumLength / 2, 0, 0);
-	cylinderActor->RotateZ(asin(ConeRadius / pendulumLength)*180/3.1415);
+	cylinderActor->RotateZ(asin(ConeRadius / pendulumLength));
 
 	cylinderActor2->SetPosition(0, 0, 0);
 	cylinderActor2->SetOrientation(0, 0, 0);
 	cylinderActor2->SetMapper(cylinderMapper);
 	cylinderActor2->AddPosition(-sin(asin(ConeRadius / pendulumLength)) * pendulumLength / 2, 0, 0);
-	cylinderActor2->RotateZ(-asin(ConeRadius / pendulumLength) * 180 / 3.1415);
+	cylinderActor2->RotateZ(-asin(ConeRadius / pendulumLength));
 	
 	// 2) Cone
 	//cone->SetCenter(0, 0, 0);
@@ -412,8 +413,8 @@ void PendulumPainter::init3DActors() {
 	assembly->SetOrigin(0, *cylinder->GetCenter() + cylinder->GetHeight() / 2, 0);
 
 	// Pendulum Position at t=0
-	assembly->RotateX(phi0 * 180 / 3.1415);
-	assembly->RotateZ(theta0 * 180 / 3.1415);
+	assembly->RotateX(phi0);
+	assembly->RotateZ(theta0);
 
 	// (4) -- Plane
 	double PlaneSize = 1.5 * pendulumLength;
