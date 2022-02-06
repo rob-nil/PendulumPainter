@@ -157,7 +157,7 @@ PendulumPainter::PendulumPainter()
   this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
   this->ui->qvtkWidget2D->interactor()->Disable();
   
-  /*
+  
   // Create orientation widget (Coordinate Sytstem)
   vtkNew<vtkOrientationMarkerWidget> orientationWidget;
   vtkNew<vtkAxesActor> axis;
@@ -171,7 +171,7 @@ PendulumPainter::PendulumPainter()
   orientationWidget->SetViewport(0.0, 0.0, 0.4, 0.4);
   orientationWidget->SetEnabled(1);
   orientationWidget->InteractiveOn();
-  */
+  
   
 
   //-------------------------------    SLOTS Connections   ---------------------------
@@ -328,8 +328,8 @@ void PendulumPainter::initSim() {
 	// Start Values: Take attention on sign (coordinate system)
 	phi0 = this->ui->lineEditStart_phi0->text().toDouble();
 	theta0 = this->ui->lineEditStart_theta0->text().toDouble();
-	vStartx = this->ui->lineEditStart_vx->text().toDouble();
-	vStarty = this->ui->lineEditStart_vy->text().toDouble();
+	vStartx = (-1) * this->ui->lineEditStart_vx->text().toDouble();
+	vStarty = (-1) * this->ui->lineEditStart_vy->text().toDouble();
 
 	// Reset Simulaiton 
 	numIncr = 1;
