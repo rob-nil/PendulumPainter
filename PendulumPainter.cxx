@@ -293,13 +293,6 @@ void PendulumPainter::SimUpdate3D() {
 		// Draw: VTK Renderer
 		ren->AddActor(line3DActor);
 
-		// (1.2)  PENDULUM ROTATION 
-		//assembly->RotateX(-matCalData[1][3]);
-		//assembly->RotateWXYZ(-matCalData[1][3], 0, 1, 0);
-		//assembly->RotateZ(matCalData[1][2]);
-		
-		//assembly->SetOrientation(-matCalData[1][3],0,matCalData[1][2]);
-
 		assembly->SetOrientation(0, 0, 0);
 		assembly->RotateY(-matCalData[1][3]);
 		assembly->RotateZ(matCalData[1][2]);
@@ -316,11 +309,6 @@ void PendulumPainter::SimUpdate3D() {
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
-		//assembly->RotateX(-matCalData[numIncr][3]);
-		//assembly->RotateWXYZ(-matCalData[numIncr][3], 0, 1, 0);
-		//assembly->RotateZ(matCalData[numIncr][2]);
-		//assembly->SetOrientation(-matCalData[numIncr][3], 0, matCalData[numIncr][2]);
-		
 		assembly->SetOrientation(0, 0, 0);
 		assembly->RotateY(-matCalData[numIncr][3]);
 		assembly->RotateZ(matCalData[numIncr][2]);
