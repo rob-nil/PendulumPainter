@@ -109,7 +109,7 @@ void SphericalPendulum::integrateODE(matrix& matX, vector<double>& vecTime){
 
 	size_t steps = integrate([this](auto const& x, auto& dxdt, auto t) {this->defineODESystem(x, dxdt, t); }, x0, timeSet[0], timeSet[1], timeSet[2], push_back_state_and_time(fMatX, fVecTime) );
 	cout << "\n>>>> ODE output! ------------------------------------------------------\n\n";
-	cout << "t       | phi       | theta       | phi-dot       | theta-dot  \n";
+	cout << "t       | phi       | phi-dot       | theta       | theta-dot  \n";
 	printState(fVecTime, fMatX, steps);
 
 	matX = fMatX;
@@ -154,7 +154,7 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 // outputs the solution of the ODE
 void SphericalPendulum::printState(vector<double> t, vector<stateType> x, size_t& s) {
 	for (size_t i = 0; i <= s; i++) 
-		printf("% .6f | % .6f  | % .6f  | % .6f  | % .6f  |\n", t[i], x[i][0], x[i][2], x[i][1], x[i][3]);
+		printf("% .6f | % .6f  | % .6f  | % .6f  | % .6f  |\n", t[i], x[i][0], x[i][1], x[i][2], x[i][3]);
 		/*cout << "t = " << t[i] << '\t'
 			<< "phi = " << x[i][0] << '\t'
 			<< "theta = " << x[i][2] << '\t'

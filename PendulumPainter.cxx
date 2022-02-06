@@ -316,6 +316,7 @@ void PendulumPainter::SimUpdate3D() {
 		// (2.2)  PENDULUM ROTATION 
 		assembly->RotateX(matCalData[numIncr][2]);
 		assembly->RotateZ(matCalData[numIncr][3]);
+		assembly->RotateWXYZ();
 	}
 }
 
