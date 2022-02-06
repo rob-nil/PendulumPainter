@@ -43,6 +43,7 @@ class SphericalPendulum {
 
 		// Other functions
 		void printState(vector<double> t, vector<stateType> x, size_t& s);
+		void printAnyMatrix(matrix mat);
 
 	private:
 		double r = 100;							// Pendulum length
@@ -54,7 +55,6 @@ class SphericalPendulum {
 
 		// ODE functions
 		void defineODESystem(const stateType& x, stateType& dxdt, const double t);
-		void printState2(matrix mat);
 		//void operator()(const stateType& x, stateType& dxdt, const double t);
 	};
 

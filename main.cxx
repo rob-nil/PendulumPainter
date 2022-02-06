@@ -25,7 +25,6 @@ typedef vector<vector<double>> matrix;
 
 int main(int argc, char** argv)
 {
-	/*
 	// needed to ensure appropriate OpenGL context is created for VTK rendering.
 	QSurfaceFormat::setDefaultFormat(QVTKOpenGLStereoWidget::defaultFormat());
 
@@ -38,7 +37,6 @@ int main(int argc, char** argv)
 
 	PendulumPainter myPendulumPainter;
 	myPendulumPainter.show();
-	*/
 
   // TESTING: _______________________________________________________________
 
@@ -54,7 +52,7 @@ int main(int argc, char** argv)
 	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
 	vector<double> timeSettings = { 0, 10, 0.1 };
-	//SphericalPendulum mySphericalPendulum(myPendulumPainter.getInputSettings(), dampingCoefficients, timeSettings);
+	//SphericalPendulum mySphericalPendulum(myPendulumPainter.getDataGUI(), dampingCoefficients, timeSettings);
 	
 	SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
 	

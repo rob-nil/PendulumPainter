@@ -138,7 +138,7 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 		fVec[3] = matX[i + 1][2] - matX[i][2];
 		fMat.push_back(fVec);
 	}
-	printState2(fMat);
+	printAnyMatrix(fMat);
 	return fMat;
 }
 
@@ -153,7 +153,7 @@ void SphericalPendulum::printState(vector<double> t, vector<stateType> x, size_t
 	}
 }
 
-void SphericalPendulum::printState2(matrix mat) {
+void SphericalPendulum::printAnyMatrix(matrix mat) {
 	int rows = mat.size();
 	int columns = mat[0].size();
 	for (int i = 0; i < rows; i++) {
