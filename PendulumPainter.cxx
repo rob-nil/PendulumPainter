@@ -51,10 +51,10 @@ PendulumPainter::PendulumPainter()
   pendulumLength = 50;
 
   // Start Values
-  vStartx = 2;			// Start velocity of Pendulum in start position in x position
-  vStarty = 0.5;		// Start velocity of Pendulum in start position in x position
+  vStartx = 0;			// Start velocity of Pendulum in start position in x position
+  vStarty = 0;		// Start velocity of Pendulum in start position in x position
   phi0 = 0;			// Start Position in rad of angle phi
-  theta0 =0;			// Start Position in rad of angle theta
+  theta0 =30;			// Start Position in rad of angle theta
 
   //Colour
   lineColor[0] = 34;	// Default RGB Color values for Drawing Line
@@ -157,21 +157,14 @@ PendulumPainter::PendulumPainter()
   this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
   this->ui->qvtkWidget2D->interactor()->Disable();
   
-  /*
-  // Create orientation widget (Coordinate Sytstem)
-  vtkNew<vtkOrientationMarkerWidget> orientationWidget;
+
   vtkNew<vtkAxesActor> axis;
-  axis->SetXAxisLabelText("test");
+  axis->SetTotalLength(15, 15, 15);
+  axis->SetShaftType(0);
+  axis->SetAxisLabels(1);
+  axis->SetCylinderRadius(0.02);
+  //axis->SetXAxisLabel()
   ren->AddActor(axis);
-  double rgba[4]{ 0.0, 0.0, 0.0, 0.0 };
-  colors->GetColor("Carrot", rgba);
-  orientationWidget->SetOutlineColor(rgba[0], rgba[1], rgba[2]);
-  orientationWidget->SetOrientationMarker(axis);
-  orientationWidget->SetInteractor(this->ui->qvtkWidget3D->interactor());
-  orientationWidget->SetViewport(0.0, 0.0, 0.4, 0.4);
-  orientationWidget->SetEnabled(1);
-  orientationWidget->InteractiveOn();
-  */
   
 
   //-------------------------------    SLOTS Connections   ---------------------------
@@ -244,9 +237,9 @@ void PendulumPainter::SimUpdate2D() {
 	if (numIncr < 2)
 	{
 		// (1.1)  DRAWING 
-		// Draw: Starting Points
-		points2D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
-		points2D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][1]);
+		// Draw: Starting Points (y,x)
+		points2D->InsertNextPoint(matCalData[0][1], 0, -matCalData[0][0]);
+		points2D->InsertNextPoint(matCalData[1][1], 0, -matCalData[1][0]);
 
 		// Draw: Line
 		line2D->SetPoints(points2D);
@@ -268,7 +261,7 @@ void PendulumPainter::SimUpdate2D() {
 	else
 	{
 		// (2.1)  DRAWING 
-		points2D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
+		points2D->InsertNextPoint(matCalData[numIncr][1], 0, -matCalData[numIncr][0]);
 		line2D->Modified(); // for updating linesource
 	}
 }
@@ -281,8 +274,8 @@ void PendulumPainter::SimUpdate3D() {
 	{
 		// (1.1)  DRAWING 
 		// Draw: Starting Points
-		points3D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
-		points3D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][0]);
+		points3D->InsertNextPoint(matCalData[0][1], 0, -matCalData[0][0]);
+		points3D->InsertNextPoint(matCalData[1][1], 0, -matCalData[1][0]);
 
 		// Draw: Line
 		line3D->SetPoints(points3D);
@@ -300,8 +293,9 @@ void PendulumPainter::SimUpdate3D() {
 		ren->AddActor(line3DActor);
 
 		// (1.2)  PENDULUM ROTATION 
-		assembly->RotateX(matCalData[1][2]);
-		assembly->RotateZ(matCalData[1][3]);
+		//assembly->RotateX(-matCalData[1][3]);
+		assembly->RotateWXYZ(-matCalData[1][3],0,1,0);
+		assembly->RotateZ(matCalData[1][2]);
 
 		std::cout << "3D Update Initialized."  << endl;
 	}
@@ -310,13 +304,22 @@ void PendulumPainter::SimUpdate3D() {
 	else 
 	{		
 		// (2.1)  DRAWING 
-		points3D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
+		points3D->InsertNextPoint(matCalData[numIncr][1], 0, -matCalData[numIncr][0]);
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
+<<<<<<< HEAD
 		assembly->RotateX(matCalData[numIncr][2]);
 		assembly->RotateZ(matCalData[numIncr][3]);
 		assembly->RotateWXYZ();
+||||||| a340854
+		assembly->RotateX(matCalData[numIncr][2]);
+		assembly->RotateZ(matCalData[numIncr][3]);
+=======
+		//assembly->RotateX(-matCalData[numIncr][3]);
+		assembly->RotateWXYZ(-matCalData[numIncr][3], 0, 1, 0);
+		assembly->RotateZ(matCalData[numIncr][2]);
+>>>>>>> a7b8fd096211c2ede0ce79c28bf9dab484a67001
 	}
 }
 
@@ -410,8 +413,9 @@ void PendulumPainter::init3DActors() {
 	assembly->SetOrigin(0, *cylinder->GetCenter() + cylinder->GetHeight() / 2, 0);
 
 	// Pendulum Position at t=0
-	assembly->RotateX(phi0);
-	assembly->RotateZ(theta0);
+	//assembly->RotateX(-theta0);
+	assembly->RotateWXYZ(-theta0, 0, 1, 0);
+	assembly->RotateZ(phi0);
 
 	// (4) -- Plane
 	double PlaneSize = 1.5 * pendulumLength;
