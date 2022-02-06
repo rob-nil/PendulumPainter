@@ -443,7 +443,7 @@ void PendulumPainter::runCalSphericalPendulum() {
 	this->statusBar()->showMessage("Pendulum trajectory computation is running - please be patient!");
 	QCoreApplication::processEvents();
 
-	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
+	//vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
 	vector<double> timeSettings = { 0, 50, 0.1 };
 	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
