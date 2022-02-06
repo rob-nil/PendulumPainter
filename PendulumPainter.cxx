@@ -133,7 +133,7 @@ PendulumPainter::PendulumPainter()
   ren->AddActor(legendScaleActor);
   ren->AddActor(assembly);
   ren->AddActor(planeActor);
-  ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
+  ren->SetBackground(colors->GetColor3d("white").GetData());
   ren->GetActiveCamera()->Elevation(30);
   ren->GetActiveCamera()->Azimuth(10);
   ren->GetActiveCamera()->SetPosition(0,0,30);
@@ -149,21 +149,16 @@ PendulumPainter::PendulumPainter()
   ren2D->GetActiveCamera()->Elevation(90);
   ren2D->GetActiveCamera()->Zoom(0.02);
 
-  ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
+  ren2D->SetBackground(colors->GetColor3d("white").GetData());
   
   // 2D VTK/Qt wedded
   vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
   this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
   this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
-
-  // 2D Interactor
-  vtkRenderWindowInteractor* iren2D = vtkRenderWindowInteractor::New();
-  iren2D->SetRenderWindow(renderWindow2D);
-  iren2D->Disable();
- 
+  this->ui->qvtkWidget2D->interactor()->Disable();
   
-  // Create orientation widget (Coordinate Sytstem)
   /*
+  // Create orientation widget (Coordinate Sytstem)
   vtkNew<vtkOrientationMarkerWidget> orientationWidget;
   vtkNew<vtkAxesActor> axis;
   axis->SetXAxisLabelText("test");
@@ -177,6 +172,7 @@ PendulumPainter::PendulumPainter()
   orientationWidget->SetEnabled(1);
   orientationWidget->InteractiveOn();
   */
+  
 
   //-------------------------------    SLOTS Connections   ---------------------------
   // Set up action signals and slots
@@ -362,13 +358,13 @@ void PendulumPainter::init3DActors() {
 	cylinderActor->SetOrientation(0, 0, 0);
 	cylinderActor->SetMapper(cylinderMapper);
 	cylinderActor->AddPosition(sin(asin(ConeRadius / pendulumLength)) * pendulumLength / 2, 0, 0);
-	cylinderActor->RotateZ(asin(ConeRadius / pendulumLength));
+	cylinderActor->RotateZ(asin(ConeRadius / pendulumLength) * 180 / 3.1415);
 
 	cylinderActor2->SetPosition(0, 0, 0);
 	cylinderActor2->SetOrientation(0, 0, 0);
 	cylinderActor2->SetMapper(cylinderMapper);
 	cylinderActor2->AddPosition(-sin(asin(ConeRadius / pendulumLength)) * pendulumLength / 2, 0, 0);
-	cylinderActor2->RotateZ(-asin(ConeRadius / pendulumLength));
+	cylinderActor2->RotateZ(-asin(ConeRadius / pendulumLength) * 180 / 3.1415);
 	
 	// 2) Cone
 	//cone->SetCenter(0, 0, 0);
@@ -449,7 +445,13 @@ void PendulumPainter::runCalSphericalPendulum() {
 
 	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
+<<<<<<< HEAD
 	vector<double> timeSettings = { 0.0, 100.0, 0.1 };
+||||||| b22d284
+	vector<double> timeSettings = { 0, 100, 0.1 };
+=======
+	vector<double> timeSettings = { 0, 50, 0.1 };
+>>>>>>> 760cd1b0a0d506ef81a082fd9aca630279e415b3
 	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
 
 	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
