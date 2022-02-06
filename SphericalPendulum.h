@@ -48,7 +48,9 @@ class SphericalPendulum {
 	private:
 		double r = 100;							// Pendulum length
 		double l = 3;							// Distance pendulum to drawing plane
+		double m = 10;							// Mass
 		const double g = 9.81;					// Gravity
+		const double degToRad = 3.1415926535 / 180;		// Converting from degree to radiant
 		vector<double> d = { 0.0, 0.0 };		// Damping coefficients phi and theta
 		stateType x0;							// Initial state vector
 		vector<double> timeSet = { 0, 10, 0.1 };	// Contains t_start, t_end and delta_t

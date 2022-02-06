@@ -39,8 +39,4 @@ int main(int argc, char** argv)
 	myPendulumPainter.show();
 	
   return app.exec();
- 
  }
-
-
-
