@@ -52,9 +52,9 @@ PendulumPainter::PendulumPainter()
 
   // Start Values
   vStartx = 0;			// Start velocity of Pendulum in start position in x position
-  vStarty = 0;		// Start velocity of Pendulum in start position in x position
-  phi0 = 0;			// Start Position in rad of angle phi
-  theta0 =30;			// Start Position in rad of angle theta
+  vStarty = 15;		// Start velocity of Pendulum in start position in x position
+  phi0 = 30;			// Start Position in rad of angle phi
+  theta0 =0;			// Start Position in rad of angle theta
 
   //Colour
   lineColor[0] = 34;	// Default RGB Color values for Drawing Line
@@ -238,8 +238,8 @@ void PendulumPainter::SimUpdate2D() {
 	{
 		// (1.1)  DRAWING 
 		// Draw: Starting Points (y,x)
-		points2D->InsertNextPoint(matCalData[0][1], 0, -matCalData[0][0]);
-		points2D->InsertNextPoint(matCalData[1][1], 0, -matCalData[1][0]);
+		points2D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
+		points2D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][1]);
 
 		// Draw: Line
 		line2D->SetPoints(points2D);
@@ -261,7 +261,7 @@ void PendulumPainter::SimUpdate2D() {
 	else
 	{
 		// (2.1)  DRAWING 
-		points2D->InsertNextPoint(matCalData[numIncr][1], 0, -matCalData[numIncr][0]);
+		points2D->InsertNextPoint(matCalData[numIncr][0], 0, -matCalData[numIncr][1]);
 		line2D->Modified(); // for updating linesource
 	}
 }
@@ -274,8 +274,8 @@ void PendulumPainter::SimUpdate3D() {
 	{
 		// (1.1)  DRAWING 
 		// Draw: Starting Points
-		points3D->InsertNextPoint(matCalData[0][1], 0, -matCalData[0][0]);
-		points3D->InsertNextPoint(matCalData[1][1], 0, -matCalData[1][0]);
+		points3D->InsertNextPoint(matCalData[0][0], 0, matCalData[0][1]);
+		points3D->InsertNextPoint(matCalData[1][0], 0, matCalData[1][1]);
 
 		// Draw: Line
 		line3D->SetPoints(points3D);
@@ -289,13 +289,21 @@ void PendulumPainter::SimUpdate3D() {
 		//line3DActor->GetProperty()->SetColor(66, 36, 122);
 		line3DActor->GetProperty()->SetLineWidth(linewidth);
 
+
 		// Draw: VTK Renderer
 		ren->AddActor(line3DActor);
 
 		// (1.2)  PENDULUM ROTATION 
 		//assembly->RotateX(-matCalData[1][3]);
-		assembly->RotateWXYZ(-matCalData[1][3], 0, 1, 0);
+		//assembly->RotateWXYZ(-matCalData[1][3], 0, 1, 0);
+		//assembly->RotateZ(matCalData[1][2]);
+		
+		//assembly->SetOrientation(-matCalData[1][3],0,matCalData[1][2]);
+
+		assembly->SetOrientation(0, 0, 0);
+		assembly->RotateY(-matCalData[1][3]);
 		assembly->RotateZ(matCalData[1][2]);
+
 
 		std::cout << "3D Update Initialized."  << endl;
 	}
@@ -304,12 +312,17 @@ void PendulumPainter::SimUpdate3D() {
 	else 
 	{		
 		// (2.1)  DRAWING 
-		points3D->InsertNextPoint(matCalData[numIncr][1], 0, -matCalData[numIncr][0]);
+		points3D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
 		//assembly->RotateX(-matCalData[numIncr][3]);
-		assembly->RotateWXYZ(-matCalData[numIncr][3], 0, 1, 0);
+		//assembly->RotateWXYZ(-matCalData[numIncr][3], 0, 1, 0);
+		//assembly->RotateZ(matCalData[numIncr][2]);
+		//assembly->SetOrientation(-matCalData[numIncr][3], 0, matCalData[numIncr][2]);
+		
+		assembly->SetOrientation(0, 0, 0);
+		assembly->RotateY(-matCalData[numIncr][3]);
 		assembly->RotateZ(matCalData[numIncr][2]);
 	}
 }
@@ -401,11 +414,12 @@ void PendulumPainter::init3DActors() {
 	assembly->SetPosition(0, 0, 0);
 	assembly->SetOrientation(0, 0, 0);
 	assembly->AddPosition(0, (cylinder->GetHeight() / 2 + ConeGroundDist + cone->GetHeight()), 0);
-	assembly->SetOrigin(0, *cylinder->GetCenter() + cylinder->GetHeight() / 2, 0);
+	assembly->SetOrigin(0, *cylinder->GetCenter() + cylinder->GetHeight() / 2, 0); 
 
+	
 	// Pendulum Position at t=0
-	//assembly->RotateX(-theta0);
-	assembly->RotateWXYZ(-theta0, 0, 1, 0);
+	assembly->RotateY(-theta0);
+	//assembly->RotateWXYZ(-theta0, 0, 1, 0);
 	assembly->RotateZ(phi0);
 
 	// (4) -- Plane
@@ -440,8 +454,8 @@ void PendulumPainter::runCalSphericalPendulum() {
 	QCoreApplication::processEvents();
 
 	//vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
-	vector<double> dampingCoefficients = { 0.1, 0.1 };
-	vector<double> timeSettings = { 0, 50, 0.1 };
+	vector<double> dampingCoefficients = { 0, 0 };
+	vector<double> timeSettings = { 0, 250, 0.1 };
 	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
 
 	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
@@ -494,6 +508,9 @@ void PendulumPainter::initialize() {
 
 	// Create new Actors in 3D view according to current Ui Data
 	init3DActors();
+
+	//assembly->RotateZ(10);
+	std::cout << "orientation:" << *assembly->GetOrientation() << endl;
 
 	//Update Qt Window
 	this->ui->qvtkWidget3D->renderWindow()->Render();

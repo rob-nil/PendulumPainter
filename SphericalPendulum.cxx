@@ -137,8 +137,10 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 	for (int i = 0; i < (rows-1); i++) {
 		fVec[0] = sin(matX[i][0])*(r + l) * cos(matX[i][2]);
 		fVec[1] = sin(matX[i][0])*(r + l) * sin(matX[i][2]);
-		fVec[2] = (matX[i + 1][0] - matX[i][0]) / degToRad;
-		fVec[3] = (matX[i + 1][2] - matX[i][2]) / degToRad;
+		//fVec[2] = (matX[i + 1][0] - matX[i][0]) / degToRad;
+		//fVec[3] = (matX[i + 1][2] - matX[i][2]) / degToRad;
+		fVec[2] = matX[i][0] / degToRad;
+		fVec[3] = matX[i][2] / degToRad;
 		fMat.push_back(fVec);
 	}
 	cout << "\n>>>> Values for GUI! ------------------------------------------------------\n";
