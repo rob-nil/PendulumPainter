@@ -328,8 +328,8 @@ void PendulumPainter::initSim() {
 	// Start Values: Take attention on sign (coordinate system)
 	phi0 = this->ui->lineEditStart_phi0->text().toDouble();
 	theta0 = this->ui->lineEditStart_theta0->text().toDouble();
-	vStartx = this->ui->lineEditStart_vx->text().toDouble();
-	vStarty = this->ui->lineEditStart_vy->text().toDouble();
+	vStartx = (-1) * this->ui->lineEditStart_vx->text().toDouble();
+	vStarty = (-1) * this->ui->lineEditStart_vy->text().toDouble();
 
 	// Reset Simulaiton 
 	numIncr = 1;
@@ -443,15 +443,9 @@ void PendulumPainter::runCalSphericalPendulum() {
 	this->statusBar()->showMessage("Pendulum trajectory computation is running - please be patient!");
 	QCoreApplication::processEvents();
 
-	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
+	//vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
-<<<<<<< HEAD
-	vector<double> timeSettings = { 0.0, 100.0, 0.1 };
-||||||| b22d284
-	vector<double> timeSettings = { 0, 100, 0.1 };
-=======
 	vector<double> timeSettings = { 0, 50, 0.1 };
->>>>>>> 760cd1b0a0d506ef81a082fd9aca630279e415b3
 	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
 
 	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
