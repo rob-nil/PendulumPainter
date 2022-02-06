@@ -449,7 +449,7 @@ void PendulumPainter::runCalSphericalPendulum() {
 
 	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
-	vector<double> timeSettings = { 0, 100, 0.1 };
+	vector<double> timeSettings = { 0.0, 100.0, 0.1 };
 	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
 
 	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
