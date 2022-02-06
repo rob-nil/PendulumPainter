@@ -25,10 +25,6 @@ typedef vector<vector<double>> matrix;
 
 int main(int argc, char** argv)
 {
-<<<<<<< HEAD
-=======
-	
->>>>>>> fc9c23c0c41c01056c9a65986df71c2dfbe2207e
 	// needed to ensure appropriate OpenGL context is created for VTK rendering.
 	QSurfaceFormat::setDefaultFormat(QVTKOpenGLStereoWidget::defaultFormat());
 
