@@ -25,6 +25,10 @@ typedef vector<vector<double>> matrix;
 
 int main(int argc, char** argv)
 {
+<<<<<<< HEAD
+=======
+	
+>>>>>>> fc9c23c0c41c01056c9a65986df71c2dfbe2207e
 	// needed to ensure appropriate OpenGL context is created for VTK rendering.
 	QSurfaceFormat::setDefaultFormat(QVTKOpenGLStereoWidget::defaultFormat());
 
@@ -37,6 +41,7 @@ int main(int argc, char** argv)
 
 	PendulumPainter myPendulumPainter;
 	myPendulumPainter.show();
+<<<<<<< HEAD
 
   // TESTING: _______________________________________________________________
 
@@ -48,13 +53,22 @@ int main(int argc, char** argv)
 	// 
 	// dann bitte die Vektoren "vecDiffAngle" und "vecDraw" berechnen und die meine Klasse dann
 	// über setData() aufnimmt. 
+=======
+>>>>>>> fc9c23c0c41c01056c9a65986df71c2dfbe2207e
 	
+
+	
+	/*
 	vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
 	vector<double> dampingCoefficients = { 0.1, 0.1 };
 	vector<double> timeSettings = { 0, 10, 0.1 };
+<<<<<<< HEAD
 	//SphericalPendulum mySphericalPendulum(myPendulumPainter.getDataGUI(), dampingCoefficients, timeSettings);
+=======
+	SphericalPendulum mySphericalPendulum(myPendulumPainter.getDataGUI(), dampingCoefficients, timeSettings);
+>>>>>>> fc9c23c0c41c01056c9a65986df71c2dfbe2207e
 	
-	SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
+	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
 	
 	vector<double> vecTime;
 	vector<double> refVecTime = vecTime;
@@ -67,7 +81,16 @@ int main(int argc, char** argv)
  	mySphericalPendulum.integrateODE(refMatX, refVecTime);
 	matVTK = mySphericalPendulum.getMatVTK(refMatX);
 
-	//myPendulumPainter.setData(matVTK);
+
+	myPendulumPainter.setCalData(matVTK);
+
+
+	*/
+
+
+
+
+
 
   /*
   // Additional Testing Class
@@ -132,9 +155,11 @@ int main(int argc, char** argv)
 
 
   // _________________________________________________________________________
+   */
+
 
   return app.exec();
-  */
+ 
  }
 
 

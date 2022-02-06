@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1030</width>
+    <width>1034</width>
     <height>934</height>
    </rect>
   </property>
@@ -289,66 +289,8 @@ p, li { white-space: pre-wrap; }
           <layout class="QVBoxLayout" name="verticalLayout_5">
            <item>
             <layout class="QGridLayout" name="gridLayout_2">
-             <item row="4" column="2">
-              <widget class="QLineEdit" name="lineEditStart_v">
-               <property name="minimumSize">
-                <size>
-                 <width>100</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_4">
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>y: </string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="2">
-              <widget class="QLineEdit" name="lineEditStart_z">
-               <property name="minimumSize">
-                <size>
-                 <width>100</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="label_5">
-               <property name="maximumSize">
-                <size>
-                 <width>150</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>z: </string>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="0">
-              <widget class="QLabel" name="label_9">
+              <widget class="QLabel" name="label_8">
                <property name="minimumSize">
                 <size>
                  <width>50</width>
@@ -362,12 +304,54 @@ p, li { white-space: pre-wrap; }
                 </size>
                </property>
                <property name="text">
-                <string>velocity</string>
+                <string>vy0</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QLineEdit" name="lineEditStart_vx">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>150</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QLineEdit" name="lineEditStart_theta0">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>150</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="2">
+              <widget class="QLineEdit" name="lineEditStart_vy">
+               <property name="maximumSize">
+                <size>
+                 <width>150</width>
+                 <height>16777215</height>
+                </size>
                </property>
               </widget>
              </item>
              <item row="0" column="2">
-              <widget class="QLineEdit" name="lineEditStart_x">
+              <widget class="QLineEdit" name="lineEditStart_phi0">
                <property name="minimumSize">
                 <size>
                  <width>100</width>
@@ -397,7 +381,20 @@ p, li { white-space: pre-wrap; }
                 </size>
                </property>
                <property name="text">
-                <string>x: </string>
+                <string>phi0: </string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="maximumSize">
+                <size>
+                 <width>150</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>theta0: </string>
                </property>
               </widget>
              </item>
@@ -414,11 +411,11 @@ p, li { white-space: pre-wrap; }
                </property>
               </spacer>
              </item>
-             <item row="2" column="2">
-              <widget class="QLineEdit" name="lineEditStart_y">
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_9">
                <property name="minimumSize">
                 <size>
-                 <width>100</width>
+                 <width>50</width>
                  <height>0</height>
                 </size>
                </property>
@@ -427,6 +424,9 @@ p, li { white-space: pre-wrap; }
                  <width>150</width>
                  <height>16777215</height>
                 </size>
+               </property>
+               <property name="text">
+                <string>vx0</string>
                </property>
               </widget>
              </item>
@@ -881,7 +881,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1030</width>
+     <width>1034</width>
      <height>22</height>
     </rect>
    </property>
