@@ -294,7 +294,7 @@ void PendulumPainter::SimUpdate3D() {
 
 		// (1.2)  PENDULUM ROTATION 
 		//assembly->RotateX(-matCalData[1][3]);
-		assembly->RotateWXYZ(-matCalData[1][3],0,1,0);
+		assembly->RotateWXYZ(-matCalData[1][3], 0, 1, 0);
 		assembly->RotateZ(matCalData[1][2]);
 
 		std::cout << "3D Update Initialized."  << endl;
@@ -308,18 +308,9 @@ void PendulumPainter::SimUpdate3D() {
 		line3D->Modified(); // for updating linesource
 
 		// (2.2)  PENDULUM ROTATION 
-<<<<<<< HEAD
-		assembly->RotateX(matCalData[numIncr][2]);
-		assembly->RotateZ(matCalData[numIncr][3]);
-		assembly->RotateWXYZ();
-||||||| a340854
-		assembly->RotateX(matCalData[numIncr][2]);
-		assembly->RotateZ(matCalData[numIncr][3]);
-=======
 		//assembly->RotateX(-matCalData[numIncr][3]);
 		assembly->RotateWXYZ(-matCalData[numIncr][3], 0, 1, 0);
 		assembly->RotateZ(matCalData[numIncr][2]);
->>>>>>> a7b8fd096211c2ede0ce79c28bf9dab484a67001
 	}
 }
 
