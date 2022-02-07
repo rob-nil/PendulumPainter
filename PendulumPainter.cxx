@@ -1,5 +1,12 @@
-#include "PendulumPainter.h"
-#include "ui_PendulumPainter.h"
+/*------------------------------------------------
+
+ Name: Patrick Holzer
+ Date: 02-2022
+ Project: VIS3IL - Pendulum Painter
+
+ ------------------------------------------------*/
+
+// VTK includes
 #include "vtkGenericOpenGLRenderWindow.h"
 #include "vtkSmartPointer.h"
 #include <vtkDataObjectToTable.h>
@@ -12,195 +19,197 @@
 #include <vtkVectorText.h>
 #include <vtkCylinderSource.h>
 #include <vtkConeSource.h>
-#include <QFileDialog.h>
 #include <vtkAppendPolyData.h>
 #include <vtkCleanPolyData.h>
 #include <vtkAssembly.h>
-#include <iostream>
-#include <vector>
 #include <vtkProperty.h>
 #include <vtkCamera.h>
 #include <vtkPNGWriter.h>
 #include <vtkWindowToImageFilter.h>
 #include <vtkSTLReader.h>
-#include <QColorDialog>
-#include <QColor>
 #include <vtkActor.h>
-#include <QApplication>
 #include <vtkLegendScaleActor.h>
-#include "SphericalPendulum.h"
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
+// Qt includes
+#include <QFileDialog.h>
+#include <QColorDialog>
+#include <QColor>
+#include <QApplication>
+// Other includes
+#include <iostream>
+#include <vector>
+#include "PendulumPainter.h"
+#include "ui_PendulumPainter.h"
+#include "SphericalPendulum.h"
 
 //**************************************************************************************
-//                                  CONSTRUCTOR
+//                                  Construktor / Destructor
 //**************************************************************************************
 
+// Construktor
 PendulumPainter::PendulumPainter()
 {
-  // Initialize Class Member Variables
+	// Initialize Class Member Variables
  
-  //-------------------------------  Default Values ----------------------------------------
-  // General
-  numIncr = 1;			// saves incrementation step of simulation as class member variable
-  run = false;			// status about simulation 
-  computing = false;
-  simSpeedms = 5;		// defines the simulation speed (must be given in ms)
-  timerms = 500;		// Time in ms when Qtimer is firering (asken if button is pressed or not)
-  linewidth = 4;		// Define linewith of line drawn on the 2D/3D Visulization
-  pendulumLength = 50;
+	//-------------------------------  Default Values ----------------------------------------
+	// General
+	numIncr = 1;			// saves incrementation step of simulation as class member variable
+	run = false;			// status about simulation 
+	computing = false;
+	simSpeedms = 5;			// defines the simulation speed (must be given in ms)
+	timerms = 500;			// Time in ms when Qtimer is firering (asken if button is pressed or not)
+	linewidth = 4;			// Define linewith of line drawn on the 2D/3D Visulization
+	pendulumLength = 50;
+	simTime = 400;
+	dampingCoeff = 0.1;
 
-  // Start Values
-  vStartx = 0;			// Start velocity of Pendulum in start position in x position
-  vStarty = 15;		// Start velocity of Pendulum in start position in x position
-  phi0 = 30;			// Start Position in rad of angle phi
-  theta0 =0;			// Start Position in rad of angle theta
+	// Start Values
+	vStartx = 0;			// Start velocity of Pendulum in start position in x position
+	vStarty = 15;			// Start velocity of Pendulum in start position in x position
+	phi0 = 30;				// Start Position in rad of angle phi
+	theta0 =0;				// Start Position in rad of angle theta
 
-  //Colour
-  lineColor[0] = 34;	// Default RGB Color values for Drawing Line
-  lineColor[1] = 139;
-  lineColor[2] = 34;
+	//Colour
+	lineColor[0] = 34;		// Default RGB Color values for Drawing Line
+	lineColor[1] = 139;
+	lineColor[2] = 34;
 
-  // Geometry 
-  resolution = 30;
-  ConeGroundDist = 3;
-  CylRadius = 0.05;
-  ConeRadius = 3;
-  ConeHeight = 7;
+	// Geometry 
+	resolution = 30;
+	ConeGroundDist = 3;
+	CylRadius = 0.05;
+	ConeRadius = 3;
+	ConeHeight = 7;
 
-  // Progressbar
-  int simSpeedMax = 0;	 //inverse logic (0 ms wait timer)
-  int simSpeedMin = 100;	
-  int simSpeedStepSize = 10;
+	// Progressbar
+	int simSpeedMax = 0;	 //inverse logic (0 ms wait timer)
+	int simSpeedMin = 100;	
+	int simSpeedStepSize = 10;
 
-  //-------------------------------    Qt   -------------------------------------------------
-  this->ui = new Ui_PendulumPainter;
-  this->ui->setupUi(this);
+	//-------------------------------    Qt   -------------------------------------------------
+	this->ui = new Ui_PendulumPainter;
+	this->ui->setupUi(this);
 
-  // set UI input values to default
-  this->ui->lineEditLineWidth->setText(QString::number(linewidth));
-  this->ui->lineEditPendulumLength->setText(QString::number(pendulumLength));
-  this->ui->lineEditStart_vx->setText(QString::number(vStartx));
-  this->ui->lineEditStart_vy->setText(QString::number(vStarty));
-  this->ui->lineEditStart_phi0->setText(QString::number(phi0));
-  this->ui->lineEditStart_theta0->setText(QString::number(theta0));
+	// set UI input values to default
+	this->ui->lineEditSimulationTime->setText(QString::number(simTime));
+	this->ui->lineEditLineWidth->setText(QString::number(linewidth));
+	this->ui->lineEditPendulumLength->setText(QString::number(pendulumLength));
+	this->ui->lineEditDampingCoeff->setText(QString::number(dampingCoeff));
+	this->ui->lineEditStart_vx->setText(QString::number(vStartx));
+	this->ui->lineEditStart_vy->setText(QString::number(vStarty));
+	this->ui->lineEditStart_phi0->setText(QString::number(phi0));
+	this->ui->lineEditStart_theta0->setText(QString::number(theta0));
 
-  this->ui->comboBox->addItem("Background 3D");
-  this->ui->comboBox->addItem("Background 2D");
-  this->ui->comboBox->addItem("Drawing Paper");
-  this->ui->comboBox->addItem("Painting Color");
+	this->ui->comboBox->addItem("Background 3D");
+	this->ui->comboBox->addItem("Background 2D");
+	this->ui->comboBox->addItem("Drawing Paper");
+	this->ui->comboBox->addItem("Painting Color");
   
  
-  //-------------------------------    GEOMETRY -------------------------------------
-  // create geometry pointers
-  cylinder = vtkCylinderSource::New();
-  cylinderMapper = vtkPolyDataMapper::New();
-  cylinderActor = vtkActor::New();
-  cylinderActor2 = vtkActor::New();
-  cone = vtkConeSource::New();
-  coneMapper = vtkPolyDataMapper::New();
-  coneActor = vtkActor::New();
-  assembly = vtkAssembly::New();
-  plane = vtkPlaneSource::New();
-  planeMapper = vtkPolyDataMapper::New();
-  planeActor = vtkActor::New();
-  sphere = vtkSphereSource::New();
-  sphereMapper = vtkPolyDataMapper::New();
-  sphereActor = vtkActor::New();
-  line3DMapper = vtkPolyDataMapper::New();
-  line2DMapper = vtkPolyDataMapper::New();
-  line2DActor = vtkActor::New();
-  line3DActor = vtkActor::New();
+	//-------------------------------    GEOMETRY -------------------------------------
+	// create geometry pointers
+	cylinder = vtkCylinderSource::New();
+	cylinderMapper = vtkPolyDataMapper::New();
+	cylinderActor = vtkActor::New();
+	cylinderActor2 = vtkActor::New();
+	cone = vtkConeSource::New();
+	coneMapper = vtkPolyDataMapper::New();
+	coneActor = vtkActor::New();
+	assembly = vtkAssembly::New();
+	plane = vtkPlaneSource::New();
+	planeMapper = vtkPolyDataMapper::New();
+	planeActor = vtkActor::New();
+	sphere = vtkSphereSource::New();
+	sphereMapper = vtkPolyDataMapper::New();
+	sphereActor = vtkActor::New();
+	line3DMapper = vtkPolyDataMapper::New();
+	line2DMapper = vtkPolyDataMapper::New();
+	line2DActor = vtkActor::New();
+	line3DActor = vtkActor::New();
 
-  // Initialize an Parameterize Pendulum according current value form UI
-  init3DActors();
+	// Initialize an Parameterize Pendulum according current value form UI
+	init3DActors();
 
-  // Initialize Colours;
-  changeColorDefault();
+	// Initialize Colours;
+	changeColorDefault();
 
- // Legend Scale Actor
-  vtkNew<vtkLegendScaleActor> legendScaleActor;
-  legendScaleActor->SetRightAxisVisibility(0);
-  legendScaleActor->SetTopAxisVisibility(0);
+	// Legend Scale Actor
+	vtkNew<vtkLegendScaleActor> legendScaleActor;
+	legendScaleActor->SetRightAxisVisibility(0);
+	legendScaleActor->SetTopAxisVisibility(0);
 
-  vtkNew<vtkLegendScaleActor> legendScaleActor2D;
-  legendScaleActor2D->SetRightAxisVisibility(0);
-  legendScaleActor2D->SetTopAxisVisibility(0);
+	vtkNew<vtkLegendScaleActor> legendScaleActor2D;
+	legendScaleActor2D->SetRightAxisVisibility(0);
+	legendScaleActor2D->SetTopAxisVisibility(0);
 
 
-  //-------------------------------    VTK QT RENDERER   -------------------------------------
-  // 3D VTK Renderer 
-  ren->AddActor(legendScaleActor);
-  ren->AddActor(assembly);
-  ren->AddActor(planeActor);
-  ren->SetBackground(colors->GetColor3d("white").GetData());
-  ren->GetActiveCamera()->Elevation(30);
-  ren->GetActiveCamera()->Azimuth(10);
-  ren->GetActiveCamera()->SetPosition(0,0,30);
-  ren->ResetCamera();
+	//-------------------------------    VTK QT RENDERER   -------------------------------------
+	// 3D VTK Renderer 
+	ren->AddActor(legendScaleActor);
+	ren->AddActor(assembly);
+	ren->AddActor(planeActor);
+	ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
+	ren->GetActiveCamera()->Elevation(30);
+	ren->GetActiveCamera()->Azimuth(10);
+	ren->GetActiveCamera()->SetPosition(0,0,30);
+	ren->ResetCamera();
 
-  // 3D VTK/Qt wedded
-  vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
-  this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
-  this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
+	// 3D VTK/Qt wedded
+	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
+	this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
+	this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
   
-  // 2D VTK Renderer / Camera Options
-  ren2D->AddActor(legendScaleActor2D);
-  ren2D->GetActiveCamera()->Elevation(90);
-  ren2D->GetActiveCamera()->Zoom(0.02);
-
-  ren2D->SetBackground(colors->GetColor3d("white").GetData());
+	// 2D VTK Renderer / Camera Options
+	ren2D->AddActor(legendScaleActor2D);
+	ren2D->GetActiveCamera()->Elevation(90);
+	ren2D->GetActiveCamera()->Zoom(0.15);
+	ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
   
-  // 2D VTK/Qt wedded
-  vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
-  this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
-  this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
-  this->ui->qvtkWidget2D->interactor()->Disable();
+	// 2D VTK/Qt wedded
+	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
+	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
+	this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
+	this->ui->qvtkWidget2D->interactor()->Enable();
   
+	// Coordinate System
+	vtkNew<vtkAxesActor> axis;
+	axis->SetTotalLength(10, 10, 10);
+	axis->SetShaftType(0);
+	axis->SetAxisLabels(0);
+	axis->SetCylinderRadius(0.02);
+	ren->AddActor(axis);
 
-  vtkNew<vtkAxesActor> axis;
-  axis->SetTotalLength(15, 15, 15);
-  axis->SetShaftType(0);
-  axis->SetAxisLabels(1);
-  axis->SetCylinderRadius(0.02);
-  //axis->SetXAxisLabel()
-  ren->AddActor(axis);
-  
+	//-------------------------------    SLOTS Connections   ---------------------------
+	// Set up action signals and slots
+	connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
+	connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
+	connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
+	connect(this->ui->pushButtonSim, SIGNAL(clicked()), this, SLOT(pushButtonSim()));
+	connect(this->ui->pushButtonInitialize, SIGNAL(clicked()), this, SLOT(initialize()));
+	connect(this->ui->SliderSimSpeed, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->actionPrint, SIGNAL(triggered()), this, SLOT(saveImage()));
+	connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
+	connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
 
-  //-------------------------------    SLOTS Connections   ---------------------------
-  // Set up action signals and slots
-  connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
-  connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
-  connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
-  connect(this->ui->pushButtonSim, SIGNAL(clicked()), this, SLOT(pushButtonSim()));
-  connect(this->ui->pushButtonInitialize, SIGNAL(clicked()), this, SLOT(initialize()));
-  connect(this->ui->SliderSimSpeed, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
-  connect(this->ui->actionPrint, SIGNAL(triggered()), this, SLOT(saveImage()));
-  connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
-  connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
+	//-------------------------------    Timer   -------------------------------------
+	// Timer Setup (timer will be fired every *ms)
+	timer = new QTimer(this);
+	timer->setInterval(timerms);
+	timer->setSingleShot(false);
+	connect(timer, SIGNAL(timeout()), this, SLOT(timerslot()));
 
-  //-------------------------------    Timer   -------------------------------------
-  // Timer Setup (timer will be fired every *ms)
-  timer = new QTimer(this);
-  timer->setInterval(timerms);
-  timer->setSingleShot(false);
-  connect(timer, SIGNAL(timeout()), this, SLOT(timerslot()));
+	//-------------------------------    Progressbar   -------------------------------------
+	this->ui->progressBar->setValue(0);
 
-  //-------------------------------    Progressbar   -------------------------------------
-  this->ui->progressBar->setValue(0);
+	//-------------------------------    Slider   -------------------------------------
+	this->ui->SliderSimSpeed->setMaximum(simSpeedMin);
+	this->ui->SliderSimSpeed->setMinimum(simSpeedMax);
+	this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
+	this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
 
-  //-------------------------------    Slider   -------------------------------------
-  this->ui->SliderSimSpeed->setMaximum(simSpeedMin);
-  this->ui->SliderSimSpeed->setMinimum(simSpeedMax);
-  this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
-  this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
-
-  std::cout << "Pendulum Painter Initiated\n" << endl;
+	std::cout << "Pendulum Painter Initiated\n" << endl;
 };
-
-//**************************************************************************************
-//                                  Class Function Definitions   
-//**************************************************************************************
 
 // Destructor
 PendulumPainter::~PendulumPainter()
@@ -208,12 +217,17 @@ PendulumPainter::~PendulumPainter()
   // The smart pointers should clean up for up
 }
 
-// Set Data from Calculation Class (Julian)
+//**************************************************************************************
+//                                  Class Function Definitions   
+//**************************************************************************************
+
+// Set Data from Calculation Class
 void PendulumPainter::setCalData(matrix& matCal) {
 	matCalData = matCal;
 
 	std::cout << "Calculation Data received and updated!" << endl;
 };
+
 // Get Method: GUI Data
 vector<double> PendulumPainter::getDataGUI() {
 	vector<double>fVec(6);
@@ -228,7 +242,6 @@ vector<double> PendulumPainter::getDataGUI() {
 
 	std::cout << "GUI Data received!" << endl;
 };
-
 
 // 2D: Single Simulation Increment for Pendulum Motion and Drawing 
 void PendulumPainter::SimUpdate2D() {
@@ -261,7 +274,7 @@ void PendulumPainter::SimUpdate2D() {
 	else
 	{
 		// (2.1)  DRAWING 
-		points2D->InsertNextPoint(matCalData[numIncr][0], 0, -matCalData[numIncr][1]);
+		points2D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
 		line2D->Modified(); // for updating linesource
 	}
 }
@@ -318,8 +331,10 @@ void PendulumPainter::SimUpdate3D() {
 // Initialize Simulation loop (Increments, assign new GUI values)
 void PendulumPainter::initSim() {
 	// Read InputData from Ui
+	simTime = this->ui->lineEditSimulationTime->text().toDouble();
 	linewidth = this->ui->lineEditLineWidth->text().toInt();
 	pendulumLength = this->ui->lineEditPendulumLength->text().toDouble();
+	dampingCoeff = this->ui->lineEditDampingCoeff->text().toDouble();
 
 	// Start Values: Take attention on sign (coordinate system)
 	phi0 = this->ui->lineEditStart_phi0->text().toDouble();
@@ -441,12 +456,8 @@ void PendulumPainter::runCalSphericalPendulum() {
 	this->statusBar()->showMessage("Pendulum trajectory computation is running - please be patient!");
 	QCoreApplication::processEvents();
 
-	//vector<double> initValues = { 1.0, 0.0, 1.0, 0.1, 50, 3 }; // austauschen bzw. Umrechnungsfunktion anwenden
-	vector<double> dampingCoefficients = { 0, 0 };
-	vector<double> timeSettings = { 0, 250, 0.1 };
-	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoefficients, timeSettings);
-
-	//SphericalPendulum mySphericalPendulum(initValues, dampingCoefficients, timeSettings);
+	vector<double> timeSettings = { 0, simTime, 0.1 };
+	SphericalPendulum mySphericalPendulum(this->getDataGUI(), dampingCoeff, timeSettings);
 
 	vector<double> vecTime;
 	vector<double> refVecTime = vecTime;
@@ -459,7 +470,7 @@ void PendulumPainter::runCalSphericalPendulum() {
 	mySphericalPendulum.integrateODE(refMatX, refVecTime);
 	matVTK = mySphericalPendulum.getMatVTK(refMatX);
 
-	this->setCalData(matVTK);
+	this->setCalData(refMatVTK);
 
 	// Activate pushbutton
 	this->ui->pushButtonSim->setEnabled(true);
@@ -541,11 +552,11 @@ void PendulumPainter::timerslot() {
 			QCoreApplication::processEvents();
 			numIncr++;
 
-			std::cout << "Step: "	<< numIncr 
+			/*std::cout << "Step: "	<< numIncr 
 									<< "\tAngleIncr.: [" << matCalData[numIncr][2] << ", "
 														 << matCalData[numIncr][3] << "] " 
 									<< "\tCoord.: [X: " << matCalData[numIncr][0] << " | Y: " 
-														<< matCalData[numIncr][1] << "]" << endl;
+														<< matCalData[numIncr][1] << "]" << endl;*/
 		}
 		else
 		{
