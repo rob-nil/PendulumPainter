@@ -9,7 +9,8 @@ find_package(VTK
     RenderingFreeType
     RenderingAnnotation
     IOGeometry
-    ViewsQt)
+    ViewsQt
+    InteractionStyle)
 if (NOT VTK_FOUND)
   message("Skipping example: ${VTK_NOT_FOUND_MESSAGE}")
   return ()

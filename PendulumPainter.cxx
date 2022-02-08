@@ -31,6 +31,8 @@
 #include <vtkLegendScaleActor.h>
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkInteractorStyleImage.h>
+
 // Qt includes
 #include <QFileDialog.h>
 #include <QColorDialog>
@@ -170,7 +172,14 @@ PendulumPainter::PendulumPainter()
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
 	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
 	this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
-	this->ui->qvtkWidget2D->interactor()->Enable();
+	
+	vtkNew<vtkRenderWindowInteractor>iren2D;
+	//iren2D->SetRenderWindow(renderWindow2D);
+	
+	vtkNew<vtkInteractorStyleImage> style2D;
+	iren2D->SetInteractorStyle(style2D);
+	this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(style2D);
+	
   
 	// Coordinate System
 	vtkNew<vtkAxesActor> axis;
@@ -192,21 +201,27 @@ PendulumPainter::PendulumPainter()
 	connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
 	connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
 
-	//-------------------------------    Timer   -------------------------------------
+	//-------------------------------    Timer   ----------------------------------------
 	// Timer Setup (timer will be fired every *ms)
 	timer = new QTimer(this);
 	timer->setInterval(timerms);
 	timer->setSingleShot(false);
 	connect(timer, SIGNAL(timeout()), this, SLOT(timerslot()));
 
-	//-------------------------------    Progressbar   -------------------------------------
+	//-------------------------------    Progressbar   ----------------------------------
 	this->ui->progressBar->setValue(0);
 
-	//-------------------------------    Slider   -------------------------------------
+	//-------------------------------    Slider   ---------------------------------------
 	this->ui->SliderSimSpeed->setMaximum(simSpeedMin);
 	this->ui->SliderSimSpeed->setMinimum(simSpeedMax);
 	this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
 	this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
+
+	//-------------------------------    SimulationButton   -----------------------------
+	// Disable Simulation button while computation
+	this->ui->pushButtonSim->setEnabled(false);
+	this->ui->pushButton->repaint();
+	QCoreApplication::processEvents();
 
 	std::cout << "Pendulum Painter Initiated\n" << endl;
 };
