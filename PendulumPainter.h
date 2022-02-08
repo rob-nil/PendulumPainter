@@ -50,11 +50,13 @@ class PendulumPainter : public QMainWindow {
 		// Destructor
 		~PendulumPainter() override;
 
+		// Get/Set Functions
+		void setCalData(matrix& matCal);
+		vector<double> getDataGUI();
+
 	public slots:
 		//Public Functions
-		virtual void slotOpenFile();	//Open PNG File
 		virtual void slotExit();		//Close Program
-		virtual void msgBox();		//Show Message Box
 		virtual void pushButtonSim();
 		virtual void timerslot();
 		virtual void initialize();	// reads and assigns the values from the UI
@@ -64,6 +66,14 @@ class PendulumPainter : public QMainWindow {
 		virtual void changeColorDefault();
 
 	protected:
+		
+
+	protected slots:
+
+	private:
+		// Designer form
+		Ui_PendulumPainter* ui;
+
 		// General Variables
 		bool run;
 		bool computing;
@@ -135,15 +145,8 @@ class PendulumPainter : public QMainWindow {
 		void SimUpdate2D();
 		void initSim();
 		void init3DActors();
-		void setCalData(matrix& matCal);
 		void runCalSphericalPendulum();
-		vector<double> getDataGUI();
-
-	protected slots:
-
-	private:
-		// Designer form
-		Ui_PendulumPainter* ui;
+		
 };
 
 #endif // PendulumPainter_H

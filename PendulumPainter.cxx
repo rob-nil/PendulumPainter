@@ -582,26 +582,12 @@ void PendulumPainter::timerslot() {
 	}
 }
 
-// Open File (filter for png files)
-void PendulumPainter::slotOpenFile() {
-	QString selfilter = tr("PNG (*.png)");
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Open your File"), "", ("Images (*.png)"));
-}
-
 // Exit the Program
 void PendulumPainter::slotExit()
 {
 	qApp->exit();
 }
 
-// Message Box
-void PendulumPainter::msgBox()
-{
-	QMessageBox msgBox;
-	msgBox.setText("Cone and Sphere");
-	msgBox.exec();
-
-};
 
 // Message Box
 void PendulumPainter::getSliderValue()
