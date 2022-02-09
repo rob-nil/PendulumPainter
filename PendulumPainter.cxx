@@ -151,7 +151,7 @@ PendulumPainter::PendulumPainter()
 	ren->AddActor(legendScaleActor);
 	ren->AddActor(assembly);
 	ren->AddActor(planeActor);
-	ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
+	ren->SetBackground(colors->GetColor3d("LightGrey").GetData());
 	ren->GetActiveCamera()->Elevation(30);
 	ren->GetActiveCamera()->Azimuth(10);
 	ren->GetActiveCamera()->SetPosition(0,0,30);
@@ -166,7 +166,7 @@ PendulumPainter::PendulumPainter()
 	ren2D->AddActor(legendScaleActor2D);
 	ren2D->GetActiveCamera()->Elevation(90);
 	ren2D->GetActiveCamera()->Zoom(0.15);
-	ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
+	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
   
 	// 2D VTK/Qt wedded
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
@@ -682,8 +682,8 @@ void PendulumPainter::changeColorDefault() {
 	planeActor->GetProperty()->SetColor(colors->GetColor3d("FloralWhite").GetData());
 
 	//2D 3D Backrounds
-	ren->SetBackground(colors->GetColor3d("LightBlue").GetData());
-	ren2D->SetBackground(colors->GetColor3d("LightBlue").GetData());
+	ren->SetBackground(colors->GetColor3d("LightGrey").GetData());
+	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
 
 	// Cone
 	coneActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
