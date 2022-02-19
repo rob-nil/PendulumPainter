@@ -1,36 +1,22 @@
-/*------------------------------------------------
+/*----------------------------------------------------------------------------------------------
 
  Name: Patrick Holzer
  Date: 02-2022
  Project: VIS3IL - Pendulum Painter
 
- ------------------------------------------------*/
+ ---------------------------------------------------------------------------------------------*/
 
 // VTK includes
 #include "vtkGenericOpenGLRenderWindow.h"
 #include "vtkSmartPointer.h"
-#include <vtkDataObjectToTable.h>
-#include <vtkElevationFilter.h>
 #include <vtkNew.h>
-#include <vtkPolyDataMapper.h>
-#include <vtkQtTableView.h>
 #include <vtkRenderWindow.h>
 #include <vtkRenderer.h>
-#include <vtkVectorText.h>
-#include <vtkCylinderSource.h>
-#include <vtkConeSource.h>
-#include <vtkAppendPolyData.h>
-#include <vtkCleanPolyData.h>
-#include <vtkAssembly.h>
-#include <vtkProperty.h>
 #include <vtkCamera.h>
 #include <vtkPNGWriter.h>
 #include <vtkWindowToImageFilter.h>
-#include <vtkSTLReader.h>
-#include <vtkActor.h>
 #include <vtkLegendScaleActor.h>
 #include <vtkAxesActor.h>
-#include <vtkOrientationMarkerWidget.h>
 #include <vtkInteractorStyleImage.h>
 
 // Qt includes
@@ -38,6 +24,7 @@
 #include <QColorDialog>
 #include <QColor>
 #include <QApplication>
+
 // Other includes
 #include <iostream>
 #include <vector>
@@ -45,16 +32,16 @@
 #include "ui_PendulumPainter.h"
 #include "SphericalPendulum.h"
 
-//**************************************************************************************
+//**********************************************************************************************
 //                                  Construktor / Destructor
-//**************************************************************************************
+//**********************************************************************************************
 
 // Construktor
 PendulumPainter::PendulumPainter()
 {
 	// Initialize Class Member Variables
  
-	//-------------------------------  Default Values ----------------------------------------
+	//-------------------------------  Default Values ------------------------------------------
 	// General
 	numIncr = 1;			// saves incrementation step of simulation as class member variable
 	run = false;			// status about simulation 
@@ -63,7 +50,7 @@ PendulumPainter::PendulumPainter()
 	timerms = 500;			// Time in ms when Qtimer is firering (asken if button is pressed or not)
 	linewidth = 4;			// Define linewith of line drawn on the 2D/3D Visulization
 	pendulumLength = 50;
-	simTime = 400;
+	simTime = 400;			// Lenght of time periode for what calculation is performed
 	dampingCoeff = 0.1;
 
 	// Start Values
@@ -78,9 +65,9 @@ PendulumPainter::PendulumPainter()
 	lineColor[2] = 34;
 
 	// Geometry 
-	resolution = 30;
-	ConeGroundDist = 3;
-	CylRadius = 0.05;
+	resolution = 30;		// Resolution of Geometry
+	ConeGroundDist = 3;		// Distance from Ground to Cone apex
+	CylRadius = 0.05;		
 	ConeRadius = 3;
 	ConeHeight = 7;
 
@@ -89,11 +76,11 @@ PendulumPainter::PendulumPainter()
 	int simSpeedMin = 100;	
 	int simSpeedStepSize = 10;
 
-	//-------------------------------    Qt   -------------------------------------------------
+	//-------------------------------    Qt   --------------------------------------------------
 	this->ui = new Ui_PendulumPainter;
 	this->ui->setupUi(this);
 
-	// set UI input values to default
+	// set UI input values to default velues
 	this->ui->lineEditSimulationTime->setText(QString::number(simTime));
 	this->ui->lineEditLineWidth->setText(QString::number(linewidth));
 	this->ui->lineEditPendulumLength->setText(QString::number(pendulumLength));
@@ -108,27 +95,7 @@ PendulumPainter::PendulumPainter()
 	this->ui->comboBox->addItem("Drawing Paper");
 	this->ui->comboBox->addItem("Painting Color");
   
- 
-	//-------------------------------    GEOMETRY -------------------------------------
-	// create geometry pointers
-	cylinder = vtkCylinderSource::New();
-	cylinderMapper = vtkPolyDataMapper::New();
-	cylinderActor = vtkActor::New();
-	cylinderActor2 = vtkActor::New();
-	cone = vtkConeSource::New();
-	coneMapper = vtkPolyDataMapper::New();
-	coneActor = vtkActor::New();
-	assembly = vtkAssembly::New();
-	plane = vtkPlaneSource::New();
-	planeMapper = vtkPolyDataMapper::New();
-	planeActor = vtkActor::New();
-	sphere = vtkSphereSource::New();
-	sphereMapper = vtkPolyDataMapper::New();
-	sphereActor = vtkActor::New();
-	line3DMapper = vtkPolyDataMapper::New();
-	line2DMapper = vtkPolyDataMapper::New();
-	line2DActor = vtkActor::New();
-	line3DActor = vtkActor::New();
+ 	//-------------------------------    GEOMETRY ----------------------------------------------
 
 	// Initialize an Parameterize Pendulum according current value form UI
 	init3DActors();
@@ -189,9 +156,8 @@ PendulumPainter::PendulumPainter()
 	axis->SetCylinderRadius(0.02);
 	ren->AddActor(axis);
 
-	//-------------------------------    SLOTS Connections   ---------------------------
+	//-------------------------------    SLOTS Connections   -----------------------------------
 	// Set up action signals and slots
-	connect(this->ui->actionOpenFile, SIGNAL(triggered()), this, SLOT(slotOpenFile()));
 	connect(this->ui->actionExit, SIGNAL(triggered()), this, SLOT(slotExit()));
 	connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
 	connect(this->ui->pushButtonSim, SIGNAL(clicked()), this, SLOT(pushButtonSim()));
@@ -201,23 +167,23 @@ PendulumPainter::PendulumPainter()
 	connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
 	connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
 
-	//-------------------------------    Timer   ----------------------------------------
+	//-------------------------------    Timer   -----------------------------------------------
 	// Timer Setup (timer will be fired every *ms)
 	timer = new QTimer(this);
 	timer->setInterval(timerms);
 	timer->setSingleShot(false);
 	connect(timer, SIGNAL(timeout()), this, SLOT(timerslot()));
 
-	//-------------------------------    Progressbar   ----------------------------------
+	//-------------------------------    Progressbar   -----------------------------------------
 	this->ui->progressBar->setValue(0);
 
-	//-------------------------------    Slider   ---------------------------------------
+	//-------------------------------    Slider   ----------------------------------------------
 	this->ui->SliderSimSpeed->setMaximum(simSpeedMin);
 	this->ui->SliderSimSpeed->setMinimum(simSpeedMax);
 	this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
 	this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
 
-	//-------------------------------    SimulationButton   -----------------------------
+	//-------------------------------    SimulationButton   ------------------------------------
 	// Disable Simulation button while computation
 	this->ui->pushButtonSim->setEnabled(false);
 	this->ui->pushButton->repaint();
@@ -229,15 +195,24 @@ PendulumPainter::PendulumPainter()
 // Destructor
 PendulumPainter::~PendulumPainter()
 {
-  // The smart pointers should clean up for up
+  // VTK: Smart Pointer is used 
+  // Qt:
+  delete timer;
+	
+  std::cout << "Objects deleted" << endl;
 }
 
-//**************************************************************************************
+//************************************************************************************************
 //                                  Class Function Definitions   
-//**************************************************************************************
+//************************************************************************************************
 
 // Set Data from Calculation Class
 void PendulumPainter::setCalData(matrix& matCal) {
+   /**--------------------------------------------------------------------------------------------
+	* Desciption:	Receives the calculaiton Data from the class ShericalPendulum and
+	*				sets it. 
+	 *--------------------------------------------------------------------------------------------*/
+	
 	matCalData = matCal;
 
 	std::cout << "Calculation Data received and updated!" << endl;
@@ -245,6 +220,11 @@ void PendulumPainter::setCalData(matrix& matCal) {
 
 // Get Method: GUI Data
 vector<double> PendulumPainter::getDataGUI() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	Returns a vector of 6 componets which is necessary to run the 
+	 *				calculaiton in the ShericalPendulum class
+	 *--------------------------------------------------------------------------------------------*/
+
 	vector<double>fVec(6);
 	fVec = { phi0,
 			theta0,
@@ -260,6 +240,10 @@ vector<double> PendulumPainter::getDataGUI() {
 
 // 2D: Single Simulation Increment for Pendulum Motion and Drawing 
 void PendulumPainter::SimUpdate2D() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	2D: A single simulaiton increment for the pendulum motion and drawing will 
+	 *				updated and sent to render window 
+	 *--------------------------------------------------------------------------------------------*/
 
 	// (1) First Increment
 	if (numIncr < 2)
@@ -296,6 +280,10 @@ void PendulumPainter::SimUpdate2D() {
 
 // 3D: Single Simulation Increment for Pendulum Motion and Drawing 
 void PendulumPainter::SimUpdate3D() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	3D: A single simulaiton increment for the pendulum motion and drawing will 
+	 *				updated and sent to render window 
+	 *--------------------------------------------------------------------------------------------*/
 
 	// (1) First Increment
 	if (numIncr < 2)
@@ -345,6 +333,12 @@ void PendulumPainter::SimUpdate3D() {
 
 // Initialize Simulation loop (Increments, assign new GUI values)
 void PendulumPainter::initSim() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	The global simulation loop will be initialized
+	 *					- Increments
+	 *					- default/ new GUI value are set
+	 */
+
 	// Read InputData from Ui
 	simTime = this->ui->lineEditSimulationTime->text().toDouble();
 	linewidth = this->ui->lineEditLineWidth->text().toInt();
@@ -369,6 +363,9 @@ void PendulumPainter::initSim() {
 
 // Initialize/ Reset all actors 
 void PendulumPainter::init3DActors() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	All geometry objects, actors, assemblies are initialized / reset
+	 *--------------------------------------------------------------------------------------------*/
 
 	// 1) Cylinder
 	cylinder->SetCenter(0, 0, 0);
@@ -458,14 +455,16 @@ void PendulumPainter::init3DActors() {
 	std::cout << "All actors reset and initialized." << endl;
 };
 
-//**************************************************************************************
-//                                  SLOT Function Definitions    
-//**************************************************************************************
 
 // Calculation of pendulum trajectory (ODE Solver) 
 void PendulumPainter::runCalSphericalPendulum() {
+	/**--------------------------------------------------------------------------------------------
+	 * Desciption:	Functions triggers the calculation of the pendulum trajectory as well as
+	 *				the drawing coordinates which is performed by the SphericalPendulum class.
+	 *				After the data is generated, it will be forwarded to the PendulumPainter class.
+	 *--------------------------------------------------------------------------------------------*/
 
-	// Disable Simulation button while computation
+	 // Disable Simulation button while computation
 	this->ui->pushButtonSim->setEnabled(false);
 	this->ui->pushButton->repaint();
 	this->statusBar()->showMessage("Pendulum trajectory computation is running - please be patient!");
@@ -494,14 +493,24 @@ void PendulumPainter::runCalSphericalPendulum() {
 	QCoreApplication::processEvents();
 };
 
+
+//**************************************************************************************************
+//                                  SLOT Function Definitions    
+//**************************************************************************************************
+
 // Initialize Simulation and Render Window
 void PendulumPainter::initialize() {
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Global initialize method. All sub-initializations are called within this
+	 *				function. 
+	 * Overview:	1. initSim()
+	 *				2. init3DActors()
+	 *				3. runCalSphericalPendulum();
+	 * 
+	 * Button:		Initialize
+	 * -------------------------------------------------------------------------------------------*/
+	 
 
-// --------------------------------------------------------------------------------------
-// 1. initSim()
-// 2. init3DActors()
-// 3. runCalSphericalPendulum();
-// --------------------------------------------------------------------------------------
 	// Call gloabl init method
 	initSim();
 
@@ -537,7 +546,13 @@ void PendulumPainter::initialize() {
 
 // SIMULATION Start-Stop (currently only for Pendulum Motion)
 void PendulumPainter::pushButtonSim() {
-
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Activates and deactivates the TIMER - timerslot() which continually calls the  
+	 *				simulation increment update
+	 * 
+	 * Button:		Start/Stop
+	 * -------------------------------------------------------------------------------------------*/
+	 
 	if (run == false) {
 		this->ui->pushButtonSim->setText("Stop");
 		run = true;
@@ -554,6 +569,12 @@ void PendulumPainter::pushButtonSim() {
 
 // Simulation LOOP called by QTimer 
 void PendulumPainter::timerslot() {
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Timer call continually the simulaiton increment update to render the 2D and 3D 
+	 *				window. Timer is active als long as there is no interruption by pushButtonSim()
+	 *				or the end of the simulaition data. 
+	 *--------------------------------------------------------------------------------------------*/
+		
 	while (run) {
 		if (numIncr < matCalData.size()-1)
 		{
@@ -592,12 +613,21 @@ void PendulumPainter::slotExit()
 // Message Box
 void PendulumPainter::getSliderValue()
 {
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Function sets the value of the current slider bar postition from the GUI
+	 *--------------------------------------------------------------------------------------------*/
+
 	simSpeedms = 100 - (this->ui->SliderSimSpeed->value());
 	std::cout << "Slider Value changed: " << simSpeedms << endl;
 }
 
-// Printing Image
+
 void PendulumPainter::saveImage() {
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Function to save the drawn 2D image. 
+	 * 
+	 * Button:		Print-Button 
+	 *--------------------------------------------------------------------------------------------*/
 	
 	// Select directory where to save .png
 	QString imageFilePath = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"/home",
@@ -625,9 +655,15 @@ void PendulumPainter::saveImage() {
 
 }
 
-// Changing Color option
+
 void PendulumPainter::changeColor() {
-	
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Function to change the color with a qt colour dialog of following objects:
+	 *					- Background 3D
+	 *					- Background 2D
+	 *					- Drawing Paper
+	 *					- Painting Color
+	 *--------------------------------------------------------------------------------------------*/
 	QColor color = QColorDialog::getColor(QColor(64, 171, 89), 0, "Select color");
 
 	string objSel = this->ui->comboBox->currentText().toStdString();
@@ -670,8 +706,11 @@ void PendulumPainter::changeColor() {
 	std::cout << "Color set." << endl;
 };
 
-// Change Color to default values
+
 void PendulumPainter::changeColorDefault() {
+	/**---------------------------------------------------------------------------------------------
+	 * Desciption:	Function sets the colour of all objects to a default value
+	 *--------------------------------------------------------------------------------------------*/
 
 	// Drawing Line (rgb but scaled to 1!!)
 	lineColor[0] = 0.960784;

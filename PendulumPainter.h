@@ -1,10 +1,10 @@
-/*------------------------------------------------
+/*----------------------------------------------------------------------------------------------
 
  Name: Patrick Holzer
  Date: 02-2022
  Project: VIS3IL - Pendulum Painter
 
- ------------------------------------------------*/
+ ---------------------------------------------------------------------------------------------*/
 
 #ifndef PendulumPainter_H
 #define PendulumPainter_H
@@ -22,12 +22,14 @@
 #include <vtkConeSource.h>
 #include <vtkPlaneSource.h>
 #include <vtkSphereSource.h>
-#include <vtkSTLReader.h>
+#include <vtkProperty.h>
+
 // Qt includes
 #include <QProgressBar>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QTimer>	// Start Stop Event
+
 // Other includes
 #include "math.h"
 #include <vector>
@@ -115,27 +117,26 @@ class PendulumPainter : public QMainWindow {
 		vtkNew<vtkLineSource> line3D;
 		vtkNew<vtkLineSource> line2D;
 
-		vtkConeSource* cone;
-		vtkPlaneSource* plane;
-		vtkSphereSource* sphere;
-		vtkCylinderSource* cylinder;
+		vtkNew<vtkSphereSource>sphere;
+		vtkNew<vtkPlaneSource>plane;
+		vtkNew<vtkConeSource>cone;
+		vtkNew<vtkCylinderSource>cylinder;
+		vtkNew <vtkAssembly> assembly;
+		
+		vtkNew <vtkPolyDataMapper>cylinderMapper;
+		vtkNew <vtkPolyDataMapper>coneMapper;
+		vtkNew <vtkPolyDataMapper>planeMapper;
+		vtkNew <vtkPolyDataMapper>sphereMapper;
+		vtkNew <vtkPolyDataMapper>line3DMapper;
+		vtkNew <vtkPolyDataMapper>line2DMapper;
 
-		vtkAssembly* assembly;
-
-		vtkPolyDataMapper* cylinderMapper;
-		vtkPolyDataMapper* coneMapper;
-		vtkPolyDataMapper* planeMapper;
-		vtkPolyDataMapper* sphereMapper;
-		vtkPolyDataMapper* line3DMapper;
-		vtkPolyDataMapper* line2DMapper;
-
-		vtkActor* cylinderActor;
-		vtkActor* cylinderActor2;
-		vtkActor* sphereActor;
-		vtkActor* line3DActor;
-		vtkActor* line2DActor;
-		vtkActor* coneActor;
-		vtkActor* planeActor;
+		vtkNew <vtkActor>cylinderActor;
+		vtkNew <vtkActor>cylinderActor2;
+		vtkNew <vtkActor>sphereActor;
+		vtkNew <vtkActor>line3DActor;
+		vtkNew <vtkActor>line2DActor;
+		vtkNew <vtkActor>coneActor;
+		vtkNew <vtkActor>planeActor;
 
 		vtkNew<vtkRenderer> ren;
 		vtkNew<vtkRenderer> ren2D;
@@ -146,7 +147,6 @@ class PendulumPainter : public QMainWindow {
 		void initSim();
 		void init3DActors();
 		void runCalSphericalPendulum();
-		
-};
+		};
 
 #endif // PendulumPainter_H
