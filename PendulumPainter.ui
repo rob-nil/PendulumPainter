@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1017</width>
+    <width>1010</width>
     <height>1010</height>
    </rect>
   </property>
@@ -44,6 +44,11 @@
         <width>500</width>
         <height>16777215</height>
        </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,0">
        <property name="spacing">
@@ -89,6 +94,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>Parameter </string>
            </property>
@@ -112,11 +122,16 @@
                   <height>200</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.14286pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8.25pt;&quot;&gt;Introduction:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8.25pt;&quot;&gt;1) Parameterize properties in the Parameter section&lt;/span&gt;&lt;/p&gt;
@@ -130,6 +145,11 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <spacer name="verticalSpacer_7">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -148,6 +168,11 @@ p, li { white-space: pre-wrap; }
                <layout class="QGridLayout" name="gridLayout_4">
                 <item row="3" column="2">
                  <spacer name="horizontalSpacer_3">
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -173,6 +198,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -185,6 +215,11 @@ p, li { white-space: pre-wrap; }
                     <width>200</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
                   </property>
                   <property name="tabletTracking">
                    <bool>false</bool>
@@ -208,6 +243,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
@@ -220,6 +260,11 @@ p, li { white-space: pre-wrap; }
                     <width>200</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
                   </property>
                   <property name="toolTip">
                    <string extracomment="Hello"/>
@@ -240,6 +285,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Damping</string>
                   </property>
@@ -259,6 +309,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Simulation Speed</string>
                   </property>
@@ -271,6 +326,11 @@ p, li { white-space: pre-wrap; }
                     <width>150</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
                   </property>
                   <property name="text">
                    <string>Pendulum length</string>
@@ -285,6 +345,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string>Linewidth</string>
                   </property>
@@ -297,6 +362,11 @@ p, li { white-space: pre-wrap; }
                     <width>150</width>
                     <height>16777215</height>
                    </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
                   </property>
                   <property name="text">
                    <string>Simulation time</string>
@@ -311,6 +381,11 @@ p, li { white-space: pre-wrap; }
                     <height>16777215</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -320,6 +395,11 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <spacer name="verticalSpacer_2">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -338,6 +418,11 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <spacer name="verticalSpacer_4">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -372,6 +457,11 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>Start Values</string>
            </property>
@@ -392,6 +482,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>vy0</string>
                 </property>
@@ -411,6 +506,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                </widget>
               </item>
               <item row="2" column="2">
@@ -427,6 +527,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                </widget>
               </item>
               <item row="4" column="2">
@@ -436,6 +541,11 @@ p, li { white-space: pre-wrap; }
                   <width>150</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
                 </property>
                </widget>
               </item>
@@ -453,6 +563,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                </widget>
               </item>
               <item row="0" column="0">
@@ -469,6 +584,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>phi0: </string>
                 </property>
@@ -482,6 +602,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>theta0: </string>
                 </property>
@@ -489,6 +614,11 @@ p, li { white-space: pre-wrap; }
               </item>
               <item row="2" column="3">
                <spacer name="horizontalSpacer_2">
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
@@ -514,6 +644,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>vx0</string>
                 </property>
@@ -526,6 +661,11 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <spacer name="verticalSpacer_5">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -560,6 +700,11 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>Simulation Info</string>
            </property>
@@ -570,7 +715,7 @@ p, li { white-space: pre-wrap; }
                <widget class="QLabel" name="label_6">
                 <property name="minimumSize">
                  <size>
-                  <width>110</width>
+                  <width>170</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -579,6 +724,11 @@ p, li { white-space: pre-wrap; }
                   <width>150</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Simulation progress</string>
@@ -599,6 +749,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="value">
                  <number>24</number>
                 </property>
@@ -607,7 +762,12 @@ p, li { white-space: pre-wrap; }
              </layout>
             </item>
             <item>
-             <spacer name="verticalSpacer_8">
+             <spacer name="verticalSpacer_10">
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
               <property name="orientation">
                <enum>Qt::Vertical</enum>
               </property>
@@ -621,6 +781,24 @@ p, li { white-space: pre-wrap; }
             </item>
            </layout>
           </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_8">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
          </item>
          <item>
           <widget class="QGroupBox" name="groupBox_5">
@@ -642,6 +820,11 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>Color selection</string>
            </property>
@@ -662,6 +845,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Object:</string>
                 </property>
@@ -681,6 +869,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                </widget>
               </item>
               <item>
@@ -696,6 +889,11 @@ p, li { white-space: pre-wrap; }
                   <width>150</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Select Color</string>
@@ -716,6 +914,11 @@ p, li { white-space: pre-wrap; }
                   <height>16777215</height>
                  </size>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Set Default</string>
                 </property>
@@ -723,11 +926,34 @@ p, li { white-space: pre-wrap; }
               </item>
              </layout>
             </item>
+            <item>
+             <spacer name="verticalSpacer_9">
+              <property name="font">
+               <font>
+                <pointsize>14</pointsize>
+               </font>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
          </item>
          <item>
           <spacer name="verticalSpacer_6">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -746,6 +972,11 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <spacer name="verticalSpacer_3">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -770,6 +1001,11 @@ p, li { white-space: pre-wrap; }
          </property>
          <item>
           <spacer name="horizontalSpacer">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -804,6 +1040,11 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Start</string>
            </property>
@@ -822,6 +1063,11 @@ p, li { white-space: pre-wrap; }
              <width>120</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Initialize</string>
@@ -842,6 +1088,11 @@ p, li { white-space: pre-wrap; }
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Close</string>
            </property>
@@ -849,6 +1100,11 @@ p, li { white-space: pre-wrap; }
          </item>
          <item>
           <spacer name="horizontalSpacer_4">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -867,6 +1123,11 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <spacer name="verticalSpacer">
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
@@ -883,6 +1144,11 @@ p, li { white-space: pre-wrap; }
     </item>
     <item>
      <widget class="QGroupBox" name="groupBox">
+      <property name="font">
+       <font>
+        <pointsize>14</pointsize>
+       </font>
+      </property>
       <property name="title">
        <string>2D | 3D  Visualization</string>
       </property>
@@ -900,6 +1166,11 @@ p, li { white-space: pre-wrap; }
            <width>460</width>
            <height>460</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
          </property>
          <property name="toolTip">
           <string notr="true"/>
@@ -924,6 +1195,11 @@ p, li { white-space: pre-wrap; }
               <width>450</width>
               <height>450</height>
              </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
             </property>
            </widget>
           </item>
@@ -950,6 +1226,11 @@ p, li { white-space: pre-wrap; }
            <height>500</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string/>
          </property>
@@ -974,6 +1255,11 @@ p, li { white-space: pre-wrap; }
               <height>600</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>14</pointsize>
+             </font>
+            </property>
            </widget>
           </item>
          </layout>
@@ -983,7 +1269,7 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
    </layout>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -991,6 +1277,11 @@ p, li { white-space: pre-wrap; }
       <width>100</width>
       <height>30</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+     </font>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_8"/>
    </widget>
@@ -1000,7 +1291,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1017</width>
+     <width>1010</width>
      <height>22</height>
     </rect>
    </property>
@@ -1045,7 +1336,7 @@ p, li { white-space: pre-wrap; }
   </widget>
   <action name="actionOpenFile">
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="Icons/icons.qrc">
@@ -1053,6 +1344,12 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Open File...</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+   <property name="shortcutVisibleInContextMenu">
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionExit">
@@ -1077,6 +1374,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Help</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionSave">
    <property name="icon">
@@ -1086,10 +1386,16 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Save</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionMsgBox">
    <property name="text">
     <string>MsgBox</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionSave_Painting">

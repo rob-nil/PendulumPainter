@@ -18,6 +18,7 @@
 #include <vtkLegendScaleActor.h>
 #include <vtkAxesActor.h>
 #include <vtkInteractorStyleImage.h>
+#include <vtkInteractorStyleTrackballCamera.h>
 
 // Qt includes
 #include <QFileDialog.h>
@@ -134,19 +135,24 @@ PendulumPainter::PendulumPainter()
 	ren2D->GetActiveCamera()->Elevation(90);
 	ren2D->GetActiveCamera()->Zoom(0.15);
 	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
-  
+
 	// 2D VTK/Qt wedded
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
 	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
 	this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
 	
-	vtkNew<vtkRenderWindowInteractor>iren2D;
-	//iren2D->SetRenderWindow(renderWindow2D);
-	
+
+	// Interactor Properties
 	vtkNew<vtkInteractorStyleImage> style2D;
-	iren2D->SetInteractorStyle(style2D);
-	this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(style2D);
+	//this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(style2D);
+
+	vtkNew<vtkInteractorStyleTrackballCamera> iren2D;
+	this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(iren2D);
 	
+	//vtkNew<vtkRenderWindowInteractor>iren2D;
+	//iren2D->SetRenderWindow(renderWindow2D);
+	//iren2D->SetInteractorStyle(style2D);
+
   
 	// Coordinate System
 	vtkNew<vtkAxesActor> axis;
