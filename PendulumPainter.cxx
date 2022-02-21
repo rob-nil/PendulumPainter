@@ -120,11 +120,12 @@ PendulumPainter::PendulumPainter()
 	ren->AddActor(assembly);
 	ren->AddActor(planeActor);
 	ren->SetBackground(colors->GetColor3d("LightGrey").GetData());
+	ren->ResetCamera();
 	ren->GetActiveCamera()->Elevation(30);
 	ren->GetActiveCamera()->Azimuth(10);
-	ren->GetActiveCamera()->SetPosition(0,0,30);
+	ren->GetActiveCamera()->OrthogonalizeViewUp();	
 	ren->ResetCamera();
-
+	
 	// 3D VTK/Qt wedded
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow;
 	this->ui->qvtkWidget3D->setRenderWindow(renderWindow);
@@ -132,27 +133,21 @@ PendulumPainter::PendulumPainter()
   
 	// 2D VTK Renderer / Camera Options
 	ren2D->AddActor(legendScaleActor2D);
+	ren2D->GetActiveCamera()->SetPosition(130, 0, 0);
 	ren2D->GetActiveCamera()->Elevation(90);
-	ren2D->GetActiveCamera()->Zoom(0.15);
+	ren2D->GetActiveCamera()->OrthogonalizeViewUp();
+	ren2D->GetActiveCamera()->Roll(90);
 	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
+
 
 	// 2D VTK/Qt wedded
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
 	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
 	this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
 	
-
-	// Interactor Properties
+	// 2D Interactor Properties
 	vtkNew<vtkInteractorStyleImage> style2D;
-	//this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(style2D);
-
-	vtkNew<vtkInteractorStyleTrackballCamera> iren2D;
-	this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(iren2D);
-	
-	//vtkNew<vtkRenderWindowInteractor>iren2D;
-	//iren2D->SetRenderWindow(renderWindow2D);
-	//iren2D->SetInteractorStyle(style2D);
-
+	this->ui->qvtkWidget2D->interactor()->SetInteractorStyle(style2D);
   
 	// Coordinate System
 	vtkNew<vtkAxesActor> axis;
@@ -281,6 +276,12 @@ void PendulumPainter::SimUpdate2D() {
 		// (2.1)  DRAWING 
 		points2D->InsertNextPoint(matCalData[numIncr][0], 0, matCalData[numIncr][1]);
 		line2D->Modified(); // for updating linesource
+		
+		//resize camera view:
+		if (numIncr < 50)
+		{
+			ren2D->ResetCamera();
+		}
 	}
 }
 
@@ -541,6 +542,9 @@ void PendulumPainter::initialize() {
 	//assembly->RotateZ(10);
 	std::cout << "orientation:" << *assembly->GetOrientation() << endl;
 
+	//resize camera view:
+	ren->ResetCamera();
+
 	//Update Qt Window
 	this->ui->qvtkWidget3D->renderWindow()->Render();
 	this->ui->qvtkWidget2D->renderWindow()->Render();
@@ -719,9 +723,9 @@ void PendulumPainter::changeColorDefault() {
 	 *--------------------------------------------------------------------------------------------*/
 
 	// Drawing Line (rgb but scaled to 1!!)
-	lineColor[0] = 0.960784;
-	lineColor[1] = 0.870588;
-	lineColor[2] = 0.701961;
+	lineColor[0] = 0.274509804;
+	lineColor[1] = 0.509803922;
+	lineColor[2] = 0.705882353;
 
 	// Drawing Paper
 	planeActor->GetProperty()->SetColor(colors->GetColor3d("FloralWhite").GetData());
@@ -731,7 +735,7 @@ void PendulumPainter::changeColorDefault() {
 	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
 
 	// Cone
-	coneActor->GetProperty()->SetColor(colors->GetColor3d("Wheat").GetData());
+	coneActor->GetProperty()->SetColor(colors->GetColor3d("SteelBlue").GetData());
 
 	this->statusBar()->showMessage("Welcome to the Pendlulum Painter.");
 
