@@ -25,6 +25,7 @@
 #include <QColorDialog>
 #include <QColor>
 #include <QApplication>
+#include <qmessagebox.h>
 
 // Other includes
 #include <iostream>
@@ -116,14 +117,16 @@ PendulumPainter::PendulumPainter()
 
 	//-------------------------------    VTK QT RENDERER   -------------------------------------
 	// 3D VTK Renderer 
+	//vtkCamera* cam = vtkCamera::New();
+	cam->Elevation(30);
+	cam->Azimuth(10);
+	cam->OrthogonalizeViewUp();
+	
 	ren->AddActor(legendScaleActor);
 	ren->AddActor(assembly);
 	ren->AddActor(planeActor);
 	ren->SetBackground(colors->GetColor3d("LightGrey").GetData());
-	ren->ResetCamera();
-	ren->GetActiveCamera()->Elevation(30);
-	ren->GetActiveCamera()->Azimuth(10);
-	ren->GetActiveCamera()->OrthogonalizeViewUp();	
+	ren->SetActiveCamera(cam);
 	ren->ResetCamera();
 	
 	// 3D VTK/Qt wedded
@@ -132,17 +135,19 @@ PendulumPainter::PendulumPainter()
 	this->ui->qvtkWidget3D->renderWindow()->AddRenderer(ren);
   
 	// 2D VTK Renderer / Camera Options
-	ren2D->AddActor(legendScaleActor2D);
-	ren2D->GetActiveCamera()->SetPosition(130, 0, 0);
-	ren2D->GetActiveCamera()->Elevation(90);
-	ren2D->GetActiveCamera()->OrthogonalizeViewUp();
-	ren2D->GetActiveCamera()->Roll(90);
-	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
+	cam2D->SetPosition(130, 0, 0);
+	cam2D->Elevation(90);
+	cam2D->OrthogonalizeViewUp();
+	cam2D->Roll(90);
 
+	ren2D->AddActor(legendScaleActor2D); 
+	ren2D->SetActiveCamera(cam2D);
+	ren2D->SetBackground(colors->GetColor3d("LightGrey").GetData());
+	
 
 	// 2D VTK/Qt wedded
 	vtkNew<vtkGenericOpenGLRenderWindow> renderWindow2D;
-	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D); 
+	this->ui->qvtkWidget2D->setRenderWindow(renderWindow2D);
 	this->ui->qvtkWidget2D->renderWindow()->AddRenderer(ren2D);
 	
 	// 2D Interactor Properties
@@ -156,6 +161,7 @@ PendulumPainter::PendulumPainter()
 	axis->SetAxisLabels(0);
 	axis->SetCylinderRadius(0.02);
 	ren->AddActor(axis);
+	//ren2D->AddActor(axis);
 
 	//-------------------------------    SLOTS Connections   -----------------------------------
 	// Set up action signals and slots
@@ -163,10 +169,21 @@ PendulumPainter::PendulumPainter()
 	connect(this->ui->pushButtonClose, SIGNAL(clicked()), this, SLOT(slotExit()));
 	connect(this->ui->pushButtonSim, SIGNAL(clicked()), this, SLOT(pushButtonSim()));
 	connect(this->ui->pushButtonInitialize, SIGNAL(clicked()), this, SLOT(initialize()));
+
 	connect(this->ui->SliderSimSpeed, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderSimTime, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderLinewidth, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderPendLength, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderDampingCoeff, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderPhi0, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderTheta0, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderVx0, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+	connect(this->ui->SliderVy0, SIGNAL(sliderReleased()), this, SLOT(getSliderValue()));
+
 	connect(this->ui->actionPrint, SIGNAL(triggered()), this, SLOT(saveImage()));
 	connect(this->ui->pushButton, SIGNAL(clicked()), this, SLOT(changeColor()));
 	connect(this->ui->pushButton_2, SIGNAL(clicked()), this, SLOT(changeColorDefault()));
+	connect(this->ui->pushButtonResetView, SIGNAL(clicked()), this, SLOT(pushButtonResetView()));
 
 	//-------------------------------    Timer   -----------------------------------------------
 	// Timer Setup (timer will be fired every *ms)
@@ -184,13 +201,53 @@ PendulumPainter::PendulumPainter()
 	this->ui->SliderSimSpeed->setSingleStep(simSpeedStepSize);
 	this->ui->SliderSimSpeed->setValue(simSpeedMin - simSpeedms);
 
+	this->ui->SliderSimTime->setMaximum(1000);
+	this->ui->SliderSimTime->setMinimum(1);
+	this->ui->SliderSimTime->setSingleStep(5);
+	this->ui->SliderSimTime->setValue(simTime);
+
+	this->ui->SliderLinewidth->setMaximum(5);
+	this->ui->SliderLinewidth->setMinimum(1);
+	this->ui->SliderLinewidth->setSingleStep(1);
+	this->ui->SliderLinewidth->setValue(linewidth);
+
+	this->ui->SliderPendLength->setMaximum(300);
+	this->ui->SliderPendLength->setMinimum(30);
+	this->ui->SliderPendLength->setSingleStep(1);
+	this->ui->SliderPendLength->setValue(pendulumLength);
+
+	this->ui->SliderDampingCoeff->setMaximum(100);
+	this->ui->SliderDampingCoeff->setMinimum(1);
+	this->ui->SliderDampingCoeff->setSingleStep(5);
+	this->ui->SliderDampingCoeff->setValue(dampingCoeff * 100);
+
+	this->ui->SliderPhi0->setMaximum(90);
+	this->ui->SliderPhi0->setMinimum(-90);
+	this->ui->SliderPhi0->setSingleStep(1);
+	this->ui->SliderPhi0->setValue(phi0);
+
+	this->ui->SliderTheta0->setMaximum(359);
+	this->ui->SliderTheta0->setMinimum(0);
+	this->ui->SliderTheta0->setSingleStep(1);
+	this->ui->SliderTheta0->setValue(theta0);
+
+	this->ui->SliderVx0->setMaximum(50);
+	this->ui->SliderVx0->setMinimum(-50);
+	this->ui->SliderVx0->setSingleStep(1);
+	this->ui->SliderVx0->setValue(vStartx);
+
+	this->ui->SliderVy0->setMaximum(50);
+	this->ui->SliderVy0->setMinimum(-50);
+	this->ui->SliderVy0->setSingleStep(1);
+	this->ui->SliderVy0->setValue(vStarty);
+
 	//-------------------------------    SimulationButton   ------------------------------------
 	// Disable Simulation button while computation
 	this->ui->pushButtonSim->setEnabled(false);
 	this->ui->pushButton->repaint();
 	QCoreApplication::processEvents();
 
-	std::cout << "Pendulum Painter Initiated\n" << endl;
+	std::cout << "Pendulum Painter Initiated\n";
 };
 
 // Destructor
@@ -551,7 +608,7 @@ void PendulumPainter::initialize() {
 
 	QCoreApplication::processEvents();
 
-	std::cout << "GIU data initialized!\n" << endl;
+	std::cout << "GIU data initialized!\n";
 }
 
 // SIMULATION Start-Stop (currently only for Pendulum Motion)
@@ -619,7 +676,6 @@ void PendulumPainter::slotExit()
 	qApp->exit();
 }
 
-
 // Message Box
 void PendulumPainter::getSliderValue()
 {
@@ -629,8 +685,40 @@ void PendulumPainter::getSliderValue()
 
 	simSpeedms = 100 - (this->ui->SliderSimSpeed->value());
 	std::cout << "Slider Value changed: " << simSpeedms << endl;
-}
 
+	simTime = this->ui->SliderSimTime->value();
+	this->ui->lineEditSimulationTime->setText(QString::number(simTime));
+	std::cout << "Damping Coeff changed: " << dampingCoeff << endl;
+
+	linewidth = this->ui->SliderLinewidth->value();
+	this->ui->lineEditLineWidth->setText(QString::number(linewidth));
+	std::cout << "Line width changed: " << linewidth << endl;
+
+	pendulumLength = this->ui->SliderPendLength->value();
+	this->ui->lineEditPendulumLength->setText(QString::number(pendulumLength));
+	std::cout << "Pendulum length changed: " << pendulumLength << endl;
+
+	dampingCoeff = static_cast<double>((this->ui->SliderDampingCoeff->value())) / 100;
+	this->ui->lineEditDampingCoeff->setText(QString::number(dampingCoeff));
+	std::cout << "Damping Coeff changed: " << dampingCoeff << endl;
+
+	phi0 = this->ui->SliderPhi0->value();
+	this->ui->lineEditStart_phi0->setText(QString::number(phi0));
+	std::cout << "Phi0 changed: " << phi0 << endl;
+
+	theta0 = this->ui->SliderTheta0->value();
+	this->ui->lineEditStart_theta0->setText(QString::number(theta0));
+	std::cout << "Theta changed: " << theta0 << endl;
+
+	vStartx = (this->ui->SliderVx0->value());
+	this->ui->lineEditStart_vx->setText(QString::number(vStartx));
+	std::cout << "Vx0 changed: " << vStartx << endl;
+
+	vStarty = (this->ui->SliderVy0->value());
+	this->ui->lineEditStart_vy->setText(QString::number(vStarty));
+	std::cout << "Vy0 changed: " << vStarty << endl;
+
+}
 
 void PendulumPainter::saveImage() {
 	/**---------------------------------------------------------------------------------------------
@@ -664,7 +752,6 @@ void PendulumPainter::saveImage() {
 	std::cout << "Image Saved to :  " << imageFilePath.toStdString() << endl;
 
 }
-
 
 void PendulumPainter::changeColor() {
 	/**---------------------------------------------------------------------------------------------
@@ -716,7 +803,6 @@ void PendulumPainter::changeColor() {
 	std::cout << "Color set." << endl;
 };
 
-
 void PendulumPainter::changeColorDefault() {
 	/**---------------------------------------------------------------------------------------------
 	 * Desciption:	Function sets the colour of all objects to a default value
@@ -745,3 +831,15 @@ void PendulumPainter::changeColorDefault() {
 
 	std::cout << "Color set to default." << endl;
 };
+
+void PendulumPainter::pushButtonResetView() {
+	ren->ResetCamera();
+	cam->SetPosition(35.6,149,201.9);
+	cam->SetFocalPoint(0,30.665,0);
+	cam->SetViewUp(-0.0868,0.866,-0.4924);
+	ren2D->ResetCamera();
+	//Update Qt Window
+	this->ui->qvtkWidget3D->renderWindow()->Render();
+	this->ui->qvtkWidget2D->renderWindow()->Render();
+	std::cout << "View reseted!\n";
+}

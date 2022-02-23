@@ -47,7 +47,7 @@ class SphericalPendulum {
 		const double degToRad = 3.141592 / 180;	// Converting from degree to radiant
 		double d = 0.0;							// Damping coefficients phi and theta
 		stateType x0;							// Initial state vector
-		vector<double> timeSet = { 0, 10, 0.1 };// Contains t_start, t_end and delta_t
+		vector<double> timeSet = { 0, 10, 0.05 };// Contains t_start, t_end and delta_t
 
 		// ODE functions
 		void defineODESystem(const stateType& x, stateType& dxdt, const double t);

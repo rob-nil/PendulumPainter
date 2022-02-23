@@ -23,6 +23,7 @@
 #include <vtkPlaneSource.h>
 #include <vtkSphereSource.h>
 #include <vtkProperty.h>
+#include <vtkCamera.h>
 
 // Qt includes
 #include <QProgressBar>
@@ -66,6 +67,7 @@ class PendulumPainter : public QMainWindow {
 		virtual void saveImage();
 		virtual void changeColor();
 		virtual void changeColorDefault();
+		virtual void pushButtonResetView();
 
 	protected:
 		
@@ -140,6 +142,9 @@ class PendulumPainter : public QMainWindow {
 
 		vtkNew<vtkRenderer> ren;
 		vtkNew<vtkRenderer> ren2D;
+
+		vtkNew<vtkCamera> cam;
+		vtkNew<vtkCamera> cam2D;
 
 		// Internal Class Functions
 		void SimUpdate3D();

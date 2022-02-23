@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1010</width>
-    <height>1010</height>
+    <width>1106</width>
+    <height>1092</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -47,8 +47,11 @@
       </property>
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>8</pointsize>
        </font>
+      </property>
+      <property name="accessibleName">
+       <string/>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,0">
        <property name="spacing">
@@ -96,7 +99,7 @@
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="title">
@@ -124,14 +127,14 @@
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="html">
                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:14pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8.25pt;&quot;&gt;Introduction:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8.25pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8.25pt;&quot;&gt;1) Parameterize properties in the Parameter section&lt;/span&gt;&lt;/p&gt;
@@ -147,7 +150,7 @@ p, li { white-space: pre-wrap; }
                <spacer name="verticalSpacer_7">
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="orientation">
@@ -166,74 +169,11 @@ p, li { white-space: pre-wrap; }
               </item>
               <item>
                <layout class="QGridLayout" name="gridLayout_4">
-                <item row="3" column="2">
-                 <spacer name="horizontalSpacer_3">
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="lineEditLineWidth">
-                  <property name="minimumSize">
-                   <size>
-                    <width>150</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
-                 <widget class="QLineEdit" name="lineEditDampingCoeff">
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="tabletTracking">
-                   <bool>false</bool>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="1">
                  <widget class="QSlider" name="SliderSimSpeed">
                   <property name="minimumSize">
                    <size>
-                    <width>150</width>
+                    <width>180</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -245,58 +185,76 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <pointsize>14</pointsize>
+                    <pointsize>8</pointsize>
                    </font>
+                  </property>
+                  <property name="singleStep">
+                   <number>1</number>
+                  </property>
+                  <property name="value">
+                   <number>1</number>
+                  </property>
+                  <property name="sliderPosition">
+                   <number>1</number>
                   </property>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QLineEdit" name="lineEditPendulumLength">
-                  <property name="maximumSize">
-                   <size>
-                    <width>200</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string extracomment="Hello"/>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="placeholderText">
-                   <string extracomment="0"/>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="label_11">
-                  <property name="maximumSize">
-                   <size>
-                    <width>150</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Damping</string>
                   </property>
                  </widget>
                 </item>
                 <item row="0" column="0">
                  <widget class="QLabel" name="label">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Simulation Speed</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QLabel" name="label_7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Pendulum length</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2">
+                 <widget class="QLineEdit" name="lineEditDampingCoeff">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="minimumSize">
                    <size>
                     <width>100</width>
@@ -311,52 +269,25 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <pointsize>14</pointsize>
+                    <pointsize>8</pointsize>
                    </font>
                   </property>
-                  <property name="text">
-                   <string>Simulation Speed</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="label_7">
-                  <property name="maximumSize">
-                   <size>
-                    <width>150</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
+                  <property name="tabletTracking">
+                   <bool>false</bool>
                   </property>
                   <property name="text">
-                   <string>Pendulum length</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_2">
-                  <property name="maximumSize">
-                   <size>
-                    <width>150</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>14</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Linewidth</string>
+                   <string/>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="label_12">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="maximumSize">
                    <size>
                     <width>150</width>
@@ -365,7 +296,7 @@ p, li { white-space: pre-wrap; }
                   </property>
                   <property name="font">
                    <font>
-                    <pointsize>14</pointsize>
+                    <pointsize>8</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -373,17 +304,68 @@ p, li { white-space: pre-wrap; }
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEditSimulationTime">
+                <item row="2" column="1">
+                 <widget class="QSlider" name="SliderLinewidth">
+                  <property name="minimumSize">
+                   <size>
+                    <width>180</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
+                    <width>150</width>
                     <height>16777215</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <pointsize>14</pointsize>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Damping</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QLineEdit" name="lineEditLineWidth">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -391,25 +373,169 @@ p, li { white-space: pre-wrap; }
                   </property>
                  </widget>
                 </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Linewidth</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="QLineEdit" name="lineEditPendulumLength">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="toolTip">
+                   <string extracomment="Hello"/>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="placeholderText">
+                   <string extracomment="0"/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QSlider" name="SliderPendLength">
+                  <property name="minimumSize">
+                   <size>
+                    <width>180</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QSlider" name="SliderSimTime">
+                  <property name="minimumSize">
+                   <size>
+                    <width>180</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLineEdit" name="lineEditSimulationTime">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="1">
+                 <widget class="QSlider" name="SliderDampingCoeff">
+                  <property name="minimumSize">
+                   <size>
+                    <width>180</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="3">
+                 <spacer name="horizontalSpacer_3">
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                   </font>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
-              </item>
-              <item>
-               <spacer name="verticalSpacer_2">
-                <property name="font">
-                 <font>
-                  <pointsize>14</pointsize>
-                 </font>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
               </item>
              </layout>
             </item>
@@ -420,7 +546,7 @@ p, li { white-space: pre-wrap; }
           <spacer name="verticalSpacer_4">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="orientation">
@@ -459,7 +585,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="title">
@@ -472,7 +598,7 @@ p, li { white-space: pre-wrap; }
                <widget class="QLabel" name="label_8">
                 <property name="minimumSize">
                  <size>
-                  <width>50</width>
+                  <width>110</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -484,8 +610,11 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string/>
                 </property>
                 <property name="text">
                  <string>vy0</string>
@@ -494,6 +623,9 @@ p, li { white-space: pre-wrap; }
               </item>
               <item row="3" column="2">
                <widget class="QLineEdit" name="lineEditStart_vx">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
@@ -508,13 +640,16 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                </widget>
               </item>
               <item row="2" column="2">
                <widget class="QLineEdit" name="lineEditStart_theta0">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
@@ -529,13 +664,16 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                </widget>
               </item>
               <item row="4" column="2">
                <widget class="QLineEdit" name="lineEditStart_vy">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>150</width>
@@ -544,13 +682,16 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                </widget>
               </item>
               <item row="0" column="2">
                <widget class="QLineEdit" name="lineEditStart_phi0">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
@@ -565,7 +706,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                </widget>
@@ -574,7 +715,7 @@ p, li { white-space: pre-wrap; }
                <widget class="QLabel" name="label_3">
                 <property name="minimumSize">
                  <size>
-                  <width>50</width>
+                  <width>110</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -586,8 +727,14 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string extracomment="Pendulum angle"/>
+                </property>
+                <property name="toolTipDuration">
+                 <number>3</number>
                 </property>
                 <property name="text">
                  <string>phi0: </string>
@@ -596,6 +743,12 @@ p, li { white-space: pre-wrap; }
               </item>
               <item row="2" column="0">
                <widget class="QLabel" name="label_4">
+                <property name="minimumSize">
+                 <size>
+                  <width>110</width>
+                  <height>0</height>
+                 </size>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>150</width>
@@ -604,8 +757,11 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string extracomment="Rotation angle"/>
                 </property>
                 <property name="text">
                  <string>theta0: </string>
@@ -616,7 +772,7 @@ p, li { white-space: pre-wrap; }
                <spacer name="horizontalSpacer_2">
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="orientation">
@@ -634,7 +790,7 @@ p, li { white-space: pre-wrap; }
                <widget class="QLabel" name="label_9">
                 <property name="minimumSize">
                  <size>
-                  <width>50</width>
+                  <width>110</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -646,11 +802,102 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
+                </property>
+                <property name="toolTip">
+                 <string/>
                 </property>
                 <property name="text">
                  <string>vx0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSlider" name="SliderPhi0">
+                <property name="minimumSize">
+                 <size>
+                  <width>180</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string extracomment="Pendulum angle"/>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSlider" name="SliderTheta0">
+                <property name="minimumSize">
+                 <size>
+                  <width>180</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string extracomment="Rotation angle"/>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QSlider" name="SliderVx0">
+                <property name="minimumSize">
+                 <size>
+                  <width>180</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QSlider" name="SliderVy0">
+                <property name="minimumSize">
+                 <size>
+                  <width>180</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string/>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
@@ -663,7 +910,7 @@ p, li { white-space: pre-wrap; }
           <spacer name="verticalSpacer_5">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="orientation">
@@ -702,7 +949,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="title">
@@ -727,7 +974,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -751,7 +998,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="value">
@@ -761,24 +1008,6 @@ p, li { white-space: pre-wrap; }
               </item>
              </layout>
             </item>
-            <item>
-             <spacer name="verticalSpacer_10">
-              <property name="font">
-               <font>
-                <pointsize>14</pointsize>
-               </font>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
          </item>
@@ -786,7 +1015,7 @@ p, li { white-space: pre-wrap; }
           <spacer name="verticalSpacer_8">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="orientation">
@@ -822,7 +1051,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="title">
@@ -847,7 +1076,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -871,7 +1100,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                </widget>
@@ -892,7 +1121,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -916,7 +1145,7 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="font">
                  <font>
-                  <pointsize>14</pointsize>
+                  <pointsize>8</pointsize>
                  </font>
                 </property>
                 <property name="text">
@@ -930,7 +1159,7 @@ p, li { white-space: pre-wrap; }
              <spacer name="verticalSpacer_9">
               <property name="font">
                <font>
-                <pointsize>14</pointsize>
+                <pointsize>8</pointsize>
                </font>
               </property>
               <property name="orientation">
@@ -947,34 +1176,13 @@ p, li { white-space: pre-wrap; }
            </layout>
           </widget>
          </item>
-         <item>
-          <spacer name="verticalSpacer_6">
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Minimum</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </item>
        <item>
         <spacer name="verticalSpacer_3">
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="orientation">
@@ -1003,7 +1211,7 @@ p, li { white-space: pre-wrap; }
           <spacer name="horizontalSpacer">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="orientation">
@@ -1042,7 +1250,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1066,7 +1274,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1090,7 +1298,7 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="text">
@@ -1102,7 +1310,7 @@ p, li { white-space: pre-wrap; }
           <spacer name="horizontalSpacer_4">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>8</pointsize>
             </font>
            </property>
            <property name="orientation">
@@ -1125,7 +1333,7 @@ p, li { white-space: pre-wrap; }
         <spacer name="verticalSpacer">
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="orientation">
@@ -1146,7 +1354,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QGroupBox" name="groupBox">
       <property name="font">
        <font>
-        <pointsize>14</pointsize>
+        <pointsize>8</pointsize>
        </font>
       </property>
       <property name="title">
@@ -1154,12 +1362,21 @@ p, li { white-space: pre-wrap; }
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
+        <widget class="QPushButton" name="pushButtonResetView">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Reset View</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBoxGraph">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>1</verstretch>
-          </sizepolicy>
+         <property name="enabled">
+          <bool>true</bool>
          </property>
          <property name="minimumSize">
           <size>
@@ -1169,7 +1386,7 @@ p, li { white-space: pre-wrap; }
          </property>
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="toolTip">
@@ -1184,21 +1401,18 @@ p, li { white-space: pre-wrap; }
          <layout class="QVBoxLayout" name="verticalLayout_11">
           <item>
            <widget class="QVTKOpenGLStereoWidget" name="qvtkWidget3D" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>1</horstretch>
-              <verstretch>1</verstretch>
-             </sizepolicy>
+            <property name="enabled">
+             <bool>true</bool>
             </property>
             <property name="minimumSize">
              <size>
-              <width>450</width>
-              <height>450</height>
+              <width>440</width>
+              <height>430</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <pointsize>14</pointsize>
+              <pointsize>8</pointsize>
              </font>
             </property>
            </widget>
@@ -1208,45 +1422,33 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <widget class="QGroupBox" name="groupBoxGraph_2">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>1</horstretch>
-           <verstretch>1</verstretch>
-          </sizepolicy>
-         </property>
          <property name="minimumSize">
           <size>
            <width>460</width>
-           <height>410</height>
+           <height>350</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>500</height>
+           <height>420</height>
           </size>
          </property>
          <property name="font">
           <font>
-           <pointsize>14</pointsize>
+           <pointsize>8</pointsize>
           </font>
          </property>
          <property name="title">
           <string/>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_12">
+         <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0">
           <item>
            <widget class="QVTKOpenGLStereoWidget" name="qvtkWidget2D" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>1</horstretch>
-              <verstretch>1</verstretch>
-             </sizepolicy>
-            </property>
             <property name="minimumSize">
              <size>
-              <width>450</width>
-              <height>400</height>
+              <width>440</width>
+              <height>320</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -1257,7 +1459,7 @@ p, li { white-space: pre-wrap; }
             </property>
             <property name="font">
              <font>
-              <pointsize>14</pointsize>
+              <pointsize>8</pointsize>
              </font>
             </property>
            </widget>
@@ -1269,31 +1471,27 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
    </layout>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>100</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>14</pointsize>
-     </font>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_8"/>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1010</width>
-     <height>22</height>
+     <width>1106</width>
+     <height>26</height>
     </rect>
+   </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <property name="acceptDrops">
+    <bool>true</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">

@@ -77,15 +77,6 @@ void SphericalPendulum::defineODESystem(const stateType& x, stateType& dxdt, dou
 	dxdt[3] = -((2 * x[3] * x[1] * cos(x[0])) / sin(x[0])) - d * x[3] / m;
 }
 
-/*
-void SphericalPendulum::operator()(const stateType& x, stateType& dxdt, const double t) {
-	dxdt[0] = x[1];
-	dxdt[1] = x[3] * x[3] * sin(x[0]) * cos(x[0]) - g / r * sin(x[0]);
-	dxdt[2] = x[3];
-	dxdt[3] = -(2 * x[3] * x[1] * cos(x[0])) / sin(x[0]);
-}
-*/
-
 // Observe the solution during the integration steps (Standard from boost example: harmonic oscilator)
 struct push_back_state_and_time {
 	vector< stateType >& m_states;
@@ -109,25 +100,13 @@ void SphericalPendulum::integrateODE(matrix& matX, vector<double>& vecTime){
 	size_t steps = integrate([this](auto const& x, auto& dxdt, auto t) {this->defineODESystem(x, dxdt, t); }, 
 				   x0, timeSet[0], timeSet[1], timeSet[2], push_back_state_and_time(fMatX, fVecTime) );
 	
-	// Output
-	printState(fVecTime, fMatX, steps);
+	// Output calculated data
+	/*printState(fVecTime, fMatX, steps);*/
 
 	// Retunr values
 	matX = fMatX;
 	vecTime = fVecTime;
 }
-
-//void SphericalPendulum::integrateODE1(matrix& matX, vector<double>& vecTime) {
-//	// Observe vectors
-//	vector<stateType> fMatX;
-//	vector<double> fVecTime;
-//
-//	size_t steps = integrate(*this, x0, timeSet[0], timeSet[1], timeSet[2], push_back_state_and_time(fMatX, fVecTime));
-//	printState(fVecTime, fMatX, steps);
-//
-//	matX = fMatX;
-//	vecTime = fVecTime;
-//}
 
 // Calculates the values for the VTK simulation and give them back in a matrix
 // Each row is a step; a row contains in this order: x & y for drawing line and angle change of phi and theta
@@ -138,13 +117,12 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 	for (int i = 0; i < (rows-1); i++) {
 		fVec[0] = sin(matX[i][0])*(r + l) * cos(matX[i][2]);
 		fVec[1] = sin(matX[i][0])*(r + l) * sin(matX[i][2]);
-		//fVec[2] = (matX[i + 1][0] - matX[i][0]) / degToRad;
-		//fVec[3] = (matX[i + 1][2] - matX[i][2]) / degToRad;
 		fVec[2] = matX[i][0] / degToRad;
 		fVec[3] = matX[i][2] / degToRad;
 		fMat.push_back(fVec);
 	}
-	printVTKMatrix(fMat);
+	// Output calculated data
+	/*printVTKMatrix(fMat);*/
 	return fMat;
 }
 
