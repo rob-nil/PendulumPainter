@@ -24,6 +24,7 @@
 #include <vtkSphereSource.h>
 #include <vtkProperty.h>
 #include <vtkCamera.h>
+#include <vtkArrowSource.h>
 
 // Qt includes
 #include <QProgressBar>

@@ -19,6 +19,9 @@
 #include <vtkAxesActor.h>
 #include <vtkInteractorStyleImage.h>
 #include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkTransform.h>
+#include <vtkTransformPolyDataFilter.h>
+#include <vtkMinimalStandardRandomSequence.h>
 
 // Qt includes
 #include <QFileDialog.h>
@@ -161,7 +164,7 @@ PendulumPainter::PendulumPainter()
 	axis->SetAxisLabels(0);
 	axis->SetCylinderRadius(0.02);
 	ren->AddActor(axis);
-	//ren2D->AddActor(axis);
+
 
 	//-------------------------------    SLOTS Connections   -----------------------------------
 	// Set up action signals and slots

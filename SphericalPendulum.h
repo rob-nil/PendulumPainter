@@ -33,7 +33,6 @@ class SphericalPendulum {
 
 		// ODE functions
 		void integrateODE(matrix& matx, vector<double>& vectime);
-		//void integrateODE1(matrix& matX, vector<double>& vecTime);
 
 		// Other functions
 		void printState(vector<double> t, vector<stateType> x, size_t& s);
@@ -47,11 +46,10 @@ class SphericalPendulum {
 		const double degToRad = 3.141592 / 180;	// Converting from degree to radiant
 		double d = 0.0;							// Damping coefficients phi and theta
 		stateType x0;							// Initial state vector
-		vector<double> timeSet = { 0, 10, 0.05 };// Contains t_start, t_end and delta_t
+		vector<double> timeSet = {0, 10, 0.05};	// Contains t_start, t_end and delta_t
 
-		// ODE functions
+		// ODE function
 		void defineODESystem(const stateType& x, stateType& dxdt, const double t);
-		//void operator()(const stateType& x, stateType& dxdt, const double t);
 	};
 
 #endif // ShericalPendulum_H

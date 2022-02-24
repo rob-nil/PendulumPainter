@@ -100,10 +100,6 @@ void SphericalPendulum::integrateODE(matrix& matX, vector<double>& vecTime){
 	size_t steps = integrate([this](auto const& x, auto& dxdt, auto t) {this->defineODESystem(x, dxdt, t); }, 
 				   x0, timeSet[0], timeSet[1], timeSet[2], push_back_state_and_time(fMatX, fVecTime) );
 	
-	// Output calculated data
-	/*printState(fVecTime, fMatX, steps);*/
-
-	// Retunr values
 	matX = fMatX;
 	vecTime = fVecTime;
 }
@@ -129,7 +125,6 @@ matrix SphericalPendulum::getMatVTK(matrix& matX) {
 
 
 //-------------------------------    OTHER FUNCTIONS   -------------------------------------
-
 // outputs the solution of the ODE
 void SphericalPendulum::printState(vector<double> t, vector<stateType> x, size_t& s) {
 	cout << "\n>>>> ODE output! ------------------------------------------------------\n\n";
