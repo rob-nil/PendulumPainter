@@ -111,6 +111,7 @@ class PendulumPainter : public QMainWindow {
 
 		// VTK variables
 		QTimer* timer;
+		QPalette* palette = new QPalette();
 
 		vtkNew<vtkNamedColors> colors;
 

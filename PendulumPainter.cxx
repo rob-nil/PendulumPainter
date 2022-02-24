@@ -95,6 +95,17 @@ PendulumPainter::PendulumPainter()
 	this->ui->lineEditStart_phi0->setText(QString::number(phi0));
 	this->ui->lineEditStart_theta0->setText(QString::number(theta0));
 
+	palette->setColor(QPalette::Base, Qt::white);
+	palette->setColor(QPalette::Text, Qt::black);
+	this->ui->lineEditSimulationTime->setPalette(*palette);
+	this->ui->lineEditLineWidth->setPalette(*palette);
+	this->ui->lineEditPendulumLength->setPalette(*palette);
+	this->ui->lineEditDampingCoeff->setPalette(*palette);
+	this->ui->lineEditStart_vx->setPalette(*palette);
+	this->ui->lineEditStart_vy->setPalette(*palette);
+	this->ui->lineEditStart_phi0->setPalette(*palette);
+	this->ui->lineEditStart_theta0->setPalette(*palette);
+
 	this->ui->comboBox->addItem("Background 3D");
 	this->ui->comboBox->addItem("Background 2D");
 	this->ui->comboBox->addItem("Drawing Paper");
@@ -259,7 +270,7 @@ PendulumPainter::~PendulumPainter()
   // VTK: Smart Pointer is used 
   // Qt:
   delete timer;
-	
+  delete palette;
   std::cout << "Objects deleted" << endl;
 }
 
@@ -685,6 +696,9 @@ void PendulumPainter::getSliderValue()
 	/**---------------------------------------------------------------------------------------------
 	 * Desciption:	Function sets the value of the current slider bar postition from the GUI
 	 *--------------------------------------------------------------------------------------------*/
+	QPalette* palette = new QPalette();
+	palette->setColor(QPalette::Base, Qt::white);
+	palette->setColor(QPalette::Text, Qt::black);
 
 	simSpeedms = 100 - (this->ui->SliderSimSpeed->value());
 	std::cout << "Slider Value changed: " << simSpeedms << endl;
@@ -720,7 +734,6 @@ void PendulumPainter::getSliderValue()
 	vStarty = (this->ui->SliderVy0->value());
 	this->ui->lineEditStart_vy->setText(QString::number(vStarty));
 	std::cout << "Vy0 changed: " << vStarty << endl;
-
 }
 
 void PendulumPainter::saveImage() {
