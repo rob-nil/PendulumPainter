@@ -131,7 +131,6 @@ PendulumPainter::PendulumPainter()
 
 	//-------------------------------    VTK QT RENDERER   -------------------------------------
 	// 3D VTK Renderer 
-	//vtkCamera* cam = vtkCamera::New();
 	cam->Elevation(30);
 	cam->Azimuth(10);
 	cam->OrthogonalizeViewUp();
@@ -512,7 +511,6 @@ void PendulumPainter::init3DActors() {
 	
 	// Pendulum Position at t=0
 	assembly->RotateY(-theta0);
-	//assembly->RotateWXYZ(-theta0, 0, 1, 0);
 	assembly->RotateZ(phi0);
 
 	// (4) -- Plane
@@ -558,7 +556,6 @@ void PendulumPainter::runCalSphericalPendulum() {
 	matrix matVTK;
 	matrix& refMatVTK = matVTK;
 
-	//mySphericalPendulum.integrateODE(refMatX, refVecTime);
 	mySphericalPendulum.integrateODE(refMatX, refVecTime);
 	matVTK = mySphericalPendulum.getMatVTK(refMatX);
 

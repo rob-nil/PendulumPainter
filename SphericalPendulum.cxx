@@ -40,7 +40,7 @@ SphericalPendulum::~SphericalPendulum() {
 
 //-------------------------------    SET FUNCTIONS   -------------------------------------
 
-// Set input settings
+// Set input settings and the initial state from which the integration should start
 void SphericalPendulum::setInputSettings(vector<double> inputSettings) {
 	x0.push_back(inputSettings[0] * degToRad);
 	x0.push_back(inputSettings[2] / r);
@@ -48,13 +48,6 @@ void SphericalPendulum::setInputSettings(vector<double> inputSettings) {
 	x0.push_back(inputSettings[3] / r);
 	r = inputSettings[4];
 	l = inputSettings[5];
-}
-
-// Set the initial state from which the integration should start
-void SphericalPendulum::setInitState(vector<double> init_x) {
-	for (int i = 0; i <= 3; i++) {
-		x0[i] = init_x[i];
-	}
 }
 
 // Set damping coefficients
@@ -133,6 +126,7 @@ void SphericalPendulum::printState(vector<double> t, vector<stateType> x, size_t
 		printf("% .6f | % .6f  | % .6f   | % .6f   | % .6f   |\n", 
 			   t[i], x[i][0] / degToRad, x[i][2] / degToRad, x[i][1], x[i][3]);
 }
+
 
 // Output the x/y-drawing coordinates and the phi/theta-angular increment 
 void SphericalPendulum::printVTKMatrix(matrix mat) {

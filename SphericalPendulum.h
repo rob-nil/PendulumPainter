@@ -25,7 +25,6 @@ class SphericalPendulum {
 		~SphericalPendulum();
 
 		// Set / Get functions
-		void setInitState(vector<double> init_x);
 		void setInputSettings(vector<double> inputSettings);
 		void setDampingCoeff(double dampingCoeff);
 		void setTimeSettings(vector<double> timeSettings);
