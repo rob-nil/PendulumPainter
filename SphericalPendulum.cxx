@@ -62,7 +62,8 @@ void SphericalPendulum::setTimeSettings(vector<double> timeSettings) {
 
 //-------------------------------    ODE FUNCTIONS   -------------------------------------
 
-// Introducing the ODEs as first order ODEs. Apply numerical integration design as the right hand side (RHS) of the equations.
+// Introducing the ODEs as first order ODEs. 
+// Apply numerical integration design as the right hand side (RHS) of the equations.
 void SphericalPendulum::defineODESystem(const stateType& x, stateType& dxdt, double t) {
 	dxdt[0] = x[1];
 	dxdt[1] = x[3] * x[3] * sin(x[0]) * cos(x[0]) - g / r * sin(x[0]) - d * x[1] / m;
@@ -75,7 +76,8 @@ struct push_back_state_and_time {
 	vector< stateType >& m_states;
 	vector< double >& m_times;
 
-	push_back_state_and_time(vector< stateType >& states, vector< double >& times) : m_states(states), m_times(times) { }
+	push_back_state_and_time(vector< stateType >& states, vector< double >& times) 
+		: m_states(states), m_times(times) { }
 
 	void operator()(const stateType& x, double t) {
 		m_states.push_back(x);

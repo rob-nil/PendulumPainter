@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1106</width>
+    <width>1103</width>
     <height>1092</height>
    </rect>
   </property>
@@ -1480,8 +1480,8 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1106</width>
-     <height>21</height>
+     <width>1103</width>
+     <height>26</height>
     </rect>
    </property>
    <property name="mouseTracking">
@@ -1557,10 +1557,10 @@ p, li { white-space: pre-wrap; }
   <action name="actionPrint">
    <property name="icon">
     <iconset resource="Icons/icons.qrc">
-     <normaloff>:/Icons/print.png</normaloff>:/Icons/print.png</iconset>
+     <normaloff>:/Icons/filesave.png</normaloff>:/Icons/filesave.png</iconset>
    </property>
    <property name="text">
-    <string>Print</string>
+    <string>Save picture</string>
    </property>
   </action>
   <action name="actionHelp">
